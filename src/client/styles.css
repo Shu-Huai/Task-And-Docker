@@ -213,7 +213,7 @@ button:focus-visible {
 
 .docker-grid .resource-head,
 .docker-grid .resource-row {
-  grid-template-columns: minmax(140px, 1fr) minmax(180px, 1.2fr) minmax(160px, 1.2fr) 120px 104px;
+  grid-template-columns: minmax(120px, 1fr) minmax(160px, 1.2fr) minmax(140px, 1.1fr) 110px 110px 104px;
 }
 
 .resource-head {

@@ -23,7 +23,7 @@ async function requestJson<T>(url: string, options?: RequestInit): Promise<T> {
   });
   const body = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error(body.error || "Request failed");
+    throw new Error(body.error || "请求失败");
   }
   return body as T;
 }

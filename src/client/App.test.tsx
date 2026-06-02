@@ -7,7 +7,7 @@ function jsonResponse(body: unknown, status = 200) {
   return Promise.resolve(new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } }));
 }
 
-describe("App", () => {
+describe("前端应用", () => {
   beforeEach(() => {
     vi.stubGlobal(
       "fetch",
@@ -25,14 +25,14 @@ describe("App", () => {
     vi.unstubAllGlobals();
   });
 
-  it("renders login when the session is unauthenticated", async () => {
+  it("未登录时显示登录表单", async () => {
     render(<App />);
 
-    expect(await screen.findByLabelText("Password")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Sign in" })).toBeInTheDocument();
+    expect(await screen.findByLabelText("密码")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "登录" })).toBeInTheDocument();
   });
 
-  it("logs in and shows task rows", async () => {
+  it("登录后显示任务行", async () => {
     const fetchMock = vi.fn((input: RequestInfo | URL) => {
       const url = String(input);
       if (url.endsWith("/api/me")) return jsonResponse({ authenticated: false });
@@ -50,17 +50,17 @@ describe("App", () => {
     vi.stubGlobal("fetch", fetchMock);
     render(<App />);
 
-    await userEvent.type(await screen.findByLabelText("Password"), "secret");
-    await userEvent.click(screen.getByRole("button", { name: "Sign in" }));
+    await userEvent.type(await screen.findByLabelText("密码"), "secret");
+    await userEvent.click(screen.getByRole("button", { name: "登录" }));
 
-    expect(await screen.findByRole("heading", { level: 1, name: "Task Scheduler" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { level: 1, name: "任务计划程序" })).toBeInTheDocument();
     expect(await screen.findByText("Acme")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Run task Acme" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "End task Acme" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Disable task Acme" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "运行任务 Acme" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "结束任务 Acme" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "禁用任务 Acme" })).toBeInTheDocument();
   });
 
-  it("switches to Docker page and renders container actions", async () => {
+  it("切换到 Docker 页面并显示容器操作", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn((input: RequestInfo | URL) => {
@@ -81,11 +81,12 @@ describe("App", () => {
     await userEvent.click(dockerButtons[0]);
 
     expect(await screen.findByText("postgres")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Start container db" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Stop container db" })).toBeInTheDocument();
+    expect(screen.getByText("exited")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "启动容器 db" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "停止容器 db" })).toBeInTheDocument();
   });
 
-  it("confirms destructive actions", async () => {
+  it("危险操作需要确认", async () => {
     const confirm = vi.fn(() => false);
     vi.stubGlobal("confirm", confirm);
     vi.stubGlobal(
@@ -102,7 +103,7 @@ describe("App", () => {
     );
     render(<App />);
 
-    await userEvent.click(await screen.findByRole("button", { name: "End task Acme" }));
+    await userEvent.click(await screen.findByRole("button", { name: "结束任务 Acme" }));
 
     await waitFor(() => expect(confirm).toHaveBeenCalled());
   });
