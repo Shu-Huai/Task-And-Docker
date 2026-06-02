@@ -1,36 +1,40 @@
-# Graphify Report
+# Graphify 报告
 
-Corpus: 20 files
-Graph: 141 nodes, 187 edges, 12 communities
+语料：20 个文件
+图谱：141 个节点，187 条边，12 个社区
 
-## God Nodes
-- Task And Docker Design: degree 9
-- runTaskCommand(): degree 8
-- Task And Docker: degree 8
-- scripts: degree 8
-- Task And Docker Implementation Plan: degree 7
-- createApp: degree 6
-- listTasks: degree 6
-- listContainers: degree 5
+## 核心节点
 
-## Communities
-- Community 0 (21 nodes, cohesion 0.15): AppServices, asyncRoute(), createApp, CreateAppOptions, defaultServices(), paramAsString(), SessionData, config
-- Community 1 (17 nodes, cohesion 0.14): api, ContainerRow, requestJson(), TaskRow, App(), DockerPage(), formatTime(), Login()
-- Community 2 (17 nodes, cohesion 0.12): devDependencies, concurrently, jsdom, supertest, @testing-library/jest-dom, @testing-library/react, @testing-library/user-event, tsx
-- Community 3 (13 nodes, cohesion 0.15): package.json, name, private, scripts, build, dev, dev:client, dev:server
-- Community 4 (13 nodes, cohesion 0.28): CommandResult, CommandRunner, runCommand(), assertContainerExists(), DockerContainer, DockerPsLine, listContainers, parseDockerPsJsonLines
-- Community 5 (13 nodes, cohesion 0.33): runPowerShell, assertTaskExists(), disableTask, escapePowerShellSingleQuoted(), listTasks, parsePowerShellDate(), parseScheduledTaskJson, PowerShellTask
-- Community 6 (10 nodes, cohesion 0.20): auth, password, docker, enabled, app.config.json, server, host, port
-- Community 7 (10 nodes, cohesion 0.20): 2026-06-03-task-and-docker-design.md, Architecture, Authentication, Configuration, Goal, Safety, Scope, Task And Docker Design
-- Community 8 (9 nodes, cohesion 0.22): dependencies, express, express-session, helmet, lucide-react, react, react-dom, @vitejs/plugin-react
-- Community 9 (9 nodes, cohesion 0.22): Configuration, Development, Features, Git Workflow, README.md, Requirements, Runtime Notes, Task And Docker
-- Community 10 (8 nodes, cohesion 0.25): 2026-06-03-task-and-docker.md, Task 1: Repository And Config, Task 2: Backend System Wrappers, Task 3: Backend API And Auth, Task 4: Frontend Application, Task 5: README And Graphify, Task 6: Branch Integration, Task And Docker Implementation Plan
-- Community 11 (1 nodes, cohesion 1.00): setup.ts
+- 任务与 Docker 设计：度数 9
+- `runTaskCommand()`：度数 8
+- 任务与 Docker：度数 8
+- `scripts`：度数 8
+- 任务与 Docker 实施计划：度数 7
+- `createApp`：度数 6
+- `listTasks`：度数 6
+- `listContainers`：度数 5
 
-## Surprising Connections
-- {'source': 'makeApp()', 'target': 'createApp', 'source_files': ['src/server/app.test.ts', 'src/server/app.ts'], 'confidence': 'EXTRACTED', 'relation': 'calls', 'why': 'peripheral node `makeApp()` unexpectedly reaches hub `createApp`'}
-- {'source': 'runTaskCommand()', 'target': 'normalizeTaskFolder', 'source_files': ['src/server/tasks.ts', 'src/server/config.ts'], 'confidence': 'EXTRACTED', 'relation': 'calls', 'why': 'bridges separate communities'}
-- {'source': 'runTaskCommand()', 'target': 'runPowerShell', 'source_files': ['src/server/tasks.ts', 'src/server/command.ts'], 'confidence': 'EXTRACTED', 'relation': 'calls', 'why': 'cross-file semantic connection'}
+## 社区
 
-## Notes
-- Generated with local Graphify Python modules because the Graphify CLI required an external LLM API key in this environment.
+- 社区 0（21 个节点，凝聚度 0.15）：应用服务、异步路由、应用创建、配置
+- 社区 1（17 个节点，凝聚度 0.14）：前端 API、容器行、任务行、应用组件、Docker 页面、登录组件
+- 社区 2（17 个节点，凝聚度 0.12）：测试和开发依赖
+- 社区 3（13 个节点，凝聚度 0.15）：`package.json` 与脚本配置
+- 社区 4（13 个节点，凝聚度 0.28）：命令执行、Docker 容器解析与控制
+- 社区 5（13 个节点，凝聚度 0.33）：PowerShell 执行、任务读取与任务控制
+- 社区 6（10 个节点，凝聚度 0.20）：本地应用配置
+- 社区 7（10 个节点，凝聚度 0.20）：设计文档结构
+- 社区 8（9 个节点，凝聚度 0.22）：运行依赖
+- 社区 9（9 个节点，凝聚度 0.22）：README 文档结构
+- 社区 10（8 个节点，凝聚度 0.25）：实施计划结构
+- 社区 11（1 个节点，凝聚度 1.00）：测试环境初始化
+
+## 意外连接
+
+- `makeApp()` 调用 `createApp`，测试辅助函数直接连接到应用创建核心。
+- `runTaskCommand()` 调用 `normalizeTaskFolder`，任务控制逻辑依赖配置规范化。
+- `runTaskCommand()` 调用 `runPowerShell`，任务控制逻辑跨文件连接到 PowerShell 执行层。
+
+## 说明
+
+- 由于当前环境的 Graphify CLI 需要外部 LLM API key，本报告使用本地 Graphify Python 模块生成。
