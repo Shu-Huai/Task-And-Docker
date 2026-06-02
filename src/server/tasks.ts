@@ -68,7 +68,7 @@ export async function listTasks(folder: string, runner?: CommandRunner): Promise
   return parseScheduledTaskJson(result.stdout);
 }
 
-async function assertTaskExists(folder: string, taskName: string, runner: CommandRunner): Promise<void> {
+async function assertTaskExists(folder: string, taskName: string, runner?: CommandRunner): Promise<void> {
   const tasks = await listTasks(folder, runner);
   if (!tasks.some((task) => task.name === taskName)) {
     throw new Error("Task not found");
@@ -79,7 +79,7 @@ async function runTaskCommand(
   folder: string,
   taskName: string,
   command: "Start-ScheduledTask" | "Stop-ScheduledTask" | "Disable-ScheduledTask",
-  runner: CommandRunner
+  runner?: CommandRunner
 ): Promise<void> {
   await assertTaskExists(folder, taskName, runner);
   const taskPath = normalizeTaskFolder(folder);
@@ -90,14 +90,14 @@ async function runTaskCommand(
   }
 }
 
-export function runTask(folder: string, taskName: string, runner: CommandRunner): Promise<void> {
+export function runTask(folder: string, taskName: string, runner?: CommandRunner): Promise<void> {
   return runTaskCommand(folder, taskName, "Start-ScheduledTask", runner);
 }
 
-export function stopTask(folder: string, taskName: string, runner: CommandRunner): Promise<void> {
+export function stopTask(folder: string, taskName: string, runner?: CommandRunner): Promise<void> {
   return runTaskCommand(folder, taskName, "Stop-ScheduledTask", runner);
 }
 
-export function disableTask(folder: string, taskName: string, runner: CommandRunner): Promise<void> {
+export function disableTask(folder: string, taskName: string, runner?: CommandRunner): Promise<void> {
   return runTaskCommand(folder, taskName, "Disable-ScheduledTask", runner);
 }
