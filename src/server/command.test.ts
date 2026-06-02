@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { runPowerShell } from "./command";
 
-describe("runPowerShell", () => {
+describe("PowerShell 执行", () => {
   it("使用 EncodedCommand 执行 PowerShell，避免脚本被 shell 二次解析", async () => {
     const run = vi.fn().mockResolvedValue({ stdout: "", stderr: "", exitCode: 0 });
 

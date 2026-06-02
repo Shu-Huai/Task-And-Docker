@@ -7,7 +7,7 @@ function jsonResponse(body: unknown, status = 200) {
   return Promise.resolve(new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } }));
 }
 
-describe("App", () => {
+describe("前端应用", () => {
   beforeEach(() => {
     vi.stubGlobal(
       "fetch",

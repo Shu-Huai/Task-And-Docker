@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { listContainers, parseDockerPsJsonLines, startContainer, stopContainer } from "./docker";
 
-describe("Docker 输出解析", () => {
+describe("容器输出解析", () => {
   it("把 Docker JSON 行映射为容器行", () => {
     const lines = [
       JSON.stringify({
@@ -47,7 +47,7 @@ describe("Docker 输出解析", () => {
   });
 });
 
-describe("Docker 操作", () => {
+describe("容器操作", () => {
   it("只启动当前列表中存在的容器", async () => {
     const run = vi
       .fn()
