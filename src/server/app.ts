@@ -58,6 +58,10 @@ function asyncRoute(handler: (req: Request, res: Response) => Promise<void>) {
   };
 }
 
+function paramAsString(value: string | string[]): string {
+  return Array.isArray(value) ? value[0] : value;
+}
+
 export function createApp({ config, services: serviceOverrides = {} }: CreateAppOptions) {
   const app = express();
   const services: AppServices = { ...defaultServices(), ...serviceOverrides };
@@ -114,7 +118,7 @@ export function createApp({ config, services: serviceOverrides = {} }: CreateApp
   app.post(
     "/api/tasks/:name/run",
     asyncRoute(async (req, res) => {
-      await services.runTask(config.tasks.folder, req.params.name);
+      await services.runTask(config.tasks.folder, paramAsString(req.params.name));
       res.json({ ok: true });
     })
   );
@@ -122,7 +126,7 @@ export function createApp({ config, services: serviceOverrides = {} }: CreateApp
   app.post(
     "/api/tasks/:name/stop",
     asyncRoute(async (req, res) => {
-      await services.stopTask(config.tasks.folder, req.params.name);
+      await services.stopTask(config.tasks.folder, paramAsString(req.params.name));
       res.json({ ok: true });
     })
   );
@@ -130,7 +134,7 @@ export function createApp({ config, services: serviceOverrides = {} }: CreateApp
   app.post(
     "/api/tasks/:name/disable",
     asyncRoute(async (req, res) => {
-      await services.disableTask(config.tasks.folder, req.params.name);
+      await services.disableTask(config.tasks.folder, paramAsString(req.params.name));
       res.json({ ok: true });
     })
   );
@@ -145,7 +149,7 @@ export function createApp({ config, services: serviceOverrides = {} }: CreateApp
   app.post(
     "/api/docker/containers/:id/start",
     asyncRoute(async (req, res) => {
-      await services.startContainer(req.params.id);
+      await services.startContainer(paramAsString(req.params.id));
       res.json({ ok: true });
     })
   );
@@ -153,7 +157,7 @@ export function createApp({ config, services: serviceOverrides = {} }: CreateApp
   app.post(
     "/api/docker/containers/:id/stop",
     asyncRoute(async (req, res) => {
-      await services.stopContainer(req.params.id);
+      await services.stopContainer(paramAsString(req.params.id));
       res.json({ ok: true });
     })
   );
