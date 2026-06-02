@@ -1,31 +1,31 @@
-# Task And Docker
+# 任务与 Docker
 
-Task And Docker is a Windows-native HTTP web console for two local operations tasks:
+这是一个运行在 Windows 本机上的 HTTP 运维控制台，用来管理两类本机资源：
 
-- Manage tasks inside one configured Windows Task Scheduler folder.
-- Manage local Docker containers.
+- 指定文件夹中的 Windows 任务计划程序任务。
+- 本机 Docker 容器。
 
-It is intentionally small: browse, inspect, run/start, stop/end, and disable task entries. It does not create, edit, delete, import, export, or SSH-manage resources.
+应用刻意保持小而清晰：只提供浏览、查看、运行或启动、结束或停止、禁用任务这些能力。不提供创建、编辑、删除、导入、导出，也不提供 SSH 远程管理。
 
-## Features
+## 功能
 
-- Password-protected web UI with an HTTP-only session cookie.
-- Task Scheduler page for a configured folder such as `\Auto-Start-A\`.
-- Docker page powered by the local Docker CLI.
-- Desktop sidebar layout and mobile bottom navigation.
-- Confirmation prompts for stop, end, and disable operations.
-- Backend validation that actions target resources from the current local listing.
+- 基于本地配置密码的登录保护，并使用 HTTP-only 会话 Cookie。
+- 任务计划程序页面读取配置中的文件夹，例如 `\Auto-Start-A\`。
+- Docker 页面通过本机 Docker CLI 读取容器。
+- 桌面端使用左侧导航栏，手机端使用底部导航栏。
+- 停止、结束、禁用等高影响操作会先弹出确认。
+- 后端执行操作前会先确认目标资源存在于当前本机列表中。
 
-## Requirements
+## 运行要求
 
 - Windows
-- Node.js 24 or newer
-- PowerShell with the Windows ScheduledTasks module
-- Docker CLI available on `PATH`
+- Node.js 24 或更新版本
+- PowerShell，并带有 Windows ScheduledTasks 模块
+- Docker CLI 已加入 `PATH`
 
-## Configuration
+## 配置
 
-Edit [config/app.config.json](config/app.config.json):
+编辑 [config/app.config.json](config/app.config.json)：
 
 ```json
 {
@@ -46,59 +46,59 @@ Edit [config/app.config.json](config/app.config.json):
 ```
 
 > [!IMPORTANT]
-> Change the password before exposing the app. This project uses HTTP by requirement, so do not reuse an important password.
+> 暴露到公网前请务必修改密码。本项目按要求只使用 HTTP，不使用 HTTPS，所以不要复用重要密码。
 
-## Development
+## 开发
 
-Install dependencies:
+安装依赖：
 
 ```powershell
 npm install
 ```
 
-Run the backend and Vite frontend:
+启动后端和 Vite 前端：
 
 ```powershell
 npm run dev
 ```
 
-Open:
+打开：
 
 ```text
 http://127.0.0.1:5173
 ```
 
-The Vite dev server proxies `/api` requests to the Express server on port `3000`.
+Vite 开发服务器会把 `/api` 请求代理到 `3000` 端口上的 Express 后端。
 
-## Verification
+## 验证
 
-Run tests:
+运行测试：
 
 ```powershell
 npm test
 ```
 
-Build the frontend:
+构建前端和后端：
 
 ```powershell
 npm run build
 ```
 
-## Runtime Notes
+## 运行说明
 
-The final application runs commands on the same Windows machine where it is hosted:
+最终应用只管理它所在的那台 Windows 机器：
 
-- Task Scheduler uses local PowerShell commands.
-- Docker uses the local `docker` CLI.
+- 任务计划程序使用本机 PowerShell 命令。
+- Docker 使用本机 `docker` CLI。
 
-SSH was used only during development to validate command behavior against the target server. SSH code is not part of the product.
+开发阶段曾使用 SSH 验证目标服务器上的命令行为，但最终产品不包含 SSH 功能。
 
-## Git Workflow
+## Git 工作流
 
-The repository uses:
+仓库使用：
 
-- `master` for stable integrated code.
-- `dev` for integration.
-- `feature/*` branches for focused work.
+- `master`：稳定集成分支。
+- `dev`：开发集成分支。
+- `feature/*`：功能分支。
 
-This project was built with short commits for design, tooling, backend wrappers, API auth, UI, and documentation.
+开发过程采用短小提交，分别记录设计、工具链、后端包装器、鉴权 API、界面、文档和运行修复。

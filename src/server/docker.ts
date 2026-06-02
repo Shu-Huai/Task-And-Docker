@@ -41,7 +41,7 @@ export function parseDockerPsJsonLines(stdout: string): DockerContainer[] {
 export async function listContainers(runner: CommandRunner = runCommand): Promise<DockerContainer[]> {
   const result = await runner("docker", ["ps", "-a", "--format", "{{json .}}"]);
   if (result.exitCode !== 0) {
-    throw new Error(result.stderr || "Unable to list Docker containers");
+    throw new Error(result.stderr || "无法读取 Docker 容器");
   }
   return parseDockerPsJsonLines(result.stdout);
 }
@@ -49,7 +49,7 @@ export async function listContainers(runner: CommandRunner = runCommand): Promis
 async function assertContainerExists(id: string, runner: CommandRunner): Promise<void> {
   const containers = await listContainers(runner);
   if (!containers.some((container) => container.id === id)) {
-    throw new Error("Container not found");
+    throw new Error("未找到容器");
   }
 }
 
@@ -57,7 +57,7 @@ export async function startContainer(id: string, runner: CommandRunner = runComm
   await assertContainerExists(id, runner);
   const result = await runner("docker", ["start", id]);
   if (result.exitCode !== 0) {
-    throw new Error(result.stderr || "Unable to start container");
+    throw new Error(result.stderr || "无法启动容器");
   }
 }
 
@@ -65,6 +65,6 @@ export async function stopContainer(id: string, runner: CommandRunner = runComma
   await assertContainerExists(id, runner);
   const result = await runner("docker", ["stop", id]);
   if (result.exitCode !== 0) {
-    throw new Error(result.stderr || "Unable to stop container");
+    throw new Error(result.stderr || "无法停止容器");
   }
 }

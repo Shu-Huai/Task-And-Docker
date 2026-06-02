@@ -4,8 +4,8 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { loadConfig } from "./config";
 
-describe("loadConfig", () => {
-  it("loads app configuration from a JSON file", () => {
+describe("配置加载", () => {
+  it("从 JSON 文件读取应用配置", () => {
     const dir = mkdtempSync(join(tmpdir(), "task-docker-config-"));
     const path = join(dir, "app.config.json");
     writeFileSync(
@@ -26,7 +26,7 @@ describe("loadConfig", () => {
     expect(config.docker.enabled).toBe(true);
   });
 
-  it("normalizes task folders to leading and trailing backslashes", () => {
+  it("把任务文件夹规范化为前后都有反斜杠", () => {
     const dir = mkdtempSync(join(tmpdir(), "task-docker-config-"));
     const path = join(dir, "app.config.json");
     writeFileSync(

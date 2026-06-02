@@ -13,7 +13,7 @@ function stateClass(state: string) {
 }
 
 function formatTime(value: string | null) {
-  if (!value) return "Never";
+  if (!value) return "从未运行";
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? value : date.toLocaleString();
 }
@@ -40,7 +40,7 @@ function Login({ onLogin }: { onLogin: () => void }) {
       await api.login(password);
       onLogin();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed");
+      setError(err instanceof Error ? err.message : "登录失败");
     } finally {
       setBusy(false);
     }
@@ -50,16 +50,16 @@ function Login({ onLogin }: { onLogin: () => void }) {
     <main className="login-screen">
       <form className="login-panel" onSubmit={submit}>
         <div>
-          <p className="eyebrow">Task And Docker</p>
-          <h1>Operations Console</h1>
+          <p className="eyebrow">任务与 Docker</p>
+          <h1>运维控制台</h1>
         </div>
         <label>
-          Password
+          密码
           <input value={password} onChange={(event) => setPassword(event.target.value)} type="password" autoComplete="current-password" />
         </label>
         {error && <p className="error">{error}</p>}
         <button className="primary-button" disabled={busy} type="submit">
-          {busy ? "Signing in" : "Sign in"}
+          {busy ? "正在登录" : "登录"}
         </button>
       </form>
     </main>
@@ -71,20 +71,20 @@ function TasksPage({ items, onRefresh, onAction, busyAction }: { items: TaskRow[
     <section className="page-section">
       <div className="section-toolbar">
         <div>
-          <h1>Task Scheduler</h1>
-          <p>{items.length} configured tasks</p>
+          <h1>任务计划程序</h1>
+          <p>{items.length} 个任务</p>
         </div>
-        <button className="icon-button" onClick={onRefresh} aria-label="Refresh tasks">
+        <button className="icon-button" onClick={onRefresh} aria-label="刷新任务">
           <RefreshCw size={18} />
         </button>
       </div>
       <div className="resource-list task-grid">
         <div className="resource-row resource-head">
-          <span>Name</span>
-          <span>State</span>
-          <span>Last run time</span>
-          <span>Last result</span>
-          <span>Actions</span>
+          <span>名称</span>
+          <span>状态</span>
+          <span>上次运行时间</span>
+          <span>上次运行结果</span>
+          <span>操作</span>
         </div>
         {items.map((task) => (
           <article className="resource-row" key={task.name}>
@@ -93,9 +93,9 @@ function TasksPage({ items, onRefresh, onAction, busyAction }: { items: TaskRow[
             <span>{formatTime(task.lastRunTime)}</span>
             <span>{task.lastTaskResult ?? "-"}</span>
             <div className="actions">
-              <button aria-label={`Run task ${task.name}`} disabled={busyAction === task.name + ":run"} onClick={() => onAction(task.name, "run")}><Play size={16} /></button>
-              <button aria-label={`End task ${task.name}`} disabled={busyAction === task.name + ":stop"} onClick={() => onAction(task.name, "stop")}><Square size={16} /></button>
-              <button aria-label={`Disable task ${task.name}`} disabled={busyAction === task.name + ":disable"} onClick={() => onAction(task.name, "disable")}><ShieldOff size={16} /></button>
+              <button aria-label={`运行任务 ${task.name}`} disabled={busyAction === task.name + ":run"} onClick={() => onAction(task.name, "run")}><Play size={16} /></button>
+              <button aria-label={`结束任务 ${task.name}`} disabled={busyAction === task.name + ":stop"} onClick={() => onAction(task.name, "stop")}><Square size={16} /></button>
+              <button aria-label={`禁用任务 ${task.name}`} disabled={busyAction === task.name + ":disable"} onClick={() => onAction(task.name, "disable")}><ShieldOff size={16} /></button>
             </div>
           </article>
         ))}
@@ -110,29 +110,31 @@ function DockerPage({ items, onRefresh, onAction, busyAction }: { items: Contain
       <div className="section-toolbar">
         <div>
           <h1>Docker</h1>
-          <p>{items.length} containers</p>
+          <p>{items.length} 个容器</p>
         </div>
-        <button className="icon-button" onClick={onRefresh} aria-label="Refresh containers">
+        <button className="icon-button" onClick={onRefresh} aria-label="刷新容器">
           <RefreshCw size={18} />
         </button>
       </div>
       <div className="resource-list docker-grid">
         <div className="resource-row resource-head">
-          <span>Name</span>
-          <span>Image</span>
-          <span>Port</span>
-          <span>Last started</span>
-          <span>Actions</span>
+          <span>名称</span>
+          <span>镜像</span>
+          <span>端口</span>
+          <span>状态</span>
+          <span>上次启动</span>
+          <span>操作</span>
         </div>
         {items.map((container) => (
           <article className="resource-row" key={container.id}>
             <strong>{container.name}</strong>
             <span>{container.image}</span>
             <span>{container.ports || "-"}</span>
+            <span className={stateClass(container.state)}>{container.state || container.status || "-"}</span>
             <span>{container.lastStarted}</span>
             <div className="actions">
-              <button aria-label={`Start container ${container.name}`} disabled={busyAction === container.id + ":start"} onClick={() => onAction(container.id, container.name, "start")}><Play size={16} /></button>
-              <button aria-label={`Stop container ${container.name}`} disabled={busyAction === container.id + ":stop"} onClick={() => onAction(container.id, container.name, "stop")}><Square size={16} /></button>
+              <button aria-label={`启动容器 ${container.name}`} disabled={busyAction === container.id + ":start"} onClick={() => onAction(container.id, container.name, "start")}><Play size={16} /></button>
+              <button aria-label={`停止容器 ${container.name}`} disabled={busyAction === container.id + ":stop"} onClick={() => onAction(container.id, container.name, "stop")}><Square size={16} /></button>
             </div>
           </article>
         ))}
@@ -149,7 +151,7 @@ export default function App() {
   const [error, setError] = useState("");
   const [busyAction, setBusyAction] = useState("");
 
-  const title = useMemo(() => (page === "tasks" ? "Task Scheduler" : "Docker"), [page]);
+  const title = useMemo(() => (page === "tasks" ? "任务计划程序" : "Docker"), [page]);
 
   async function refreshTasks() {
     const response = await api.tasks();
@@ -166,7 +168,7 @@ export default function App() {
     try {
       await Promise.all([refreshTasks(), refreshContainers()]);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unable to refresh data");
+      setError(err instanceof Error ? err.message : "无法刷新数据");
     }
   }
 
@@ -190,7 +192,7 @@ export default function App() {
   }
 
   async function taskAction(name: string, action: "run" | "stop" | "disable") {
-    if ((action === "stop" || action === "disable") && !window.confirm(`Confirm ${action} for ${name}?`)) return;
+    if ((action === "stop" || action === "disable") && !window.confirm(`确认${action === "stop" ? "结束" : "禁用"}任务 ${name}？`)) return;
     setBusyAction(name + ":" + action);
     try {
       if (action === "run") await api.runTask(name);
@@ -198,27 +200,27 @@ export default function App() {
       if (action === "disable") await api.disableTask(name);
       await refreshTasks();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Task action failed");
+      setError(err instanceof Error ? err.message : "任务操作失败");
     } finally {
       setBusyAction("");
     }
   }
 
   async function containerAction(id: string, name: string, action: "start" | "stop") {
-    if (action === "stop" && !window.confirm(`Confirm stop for ${name}?`)) return;
+    if (action === "stop" && !window.confirm(`确认停止容器 ${name}？`)) return;
     setBusyAction(id + ":" + action);
     try {
       if (action === "start") await api.startContainer(id);
       if (action === "stop") await api.stopContainer(id);
       await refreshContainers();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Container action failed");
+      setError(err instanceof Error ? err.message : "容器操作失败");
     } finally {
       setBusyAction("");
     }
   }
 
-  if (authenticated === null) return <main className="loading">Loading</main>;
+  if (authenticated === null) return <main className="loading">正在加载</main>;
   if (!authenticated) return <Login onLogin={afterLogin} />;
 
   return (
@@ -226,17 +228,17 @@ export default function App() {
       <aside className="sidebar">
         <div className="brand">
           <Boxes size={24} />
-          <span>Task And Docker</span>
+          <span>任务与 Docker</span>
         </div>
         <nav>
-          <NavButton page="tasks" active={page} icon={<CalendarClock size={20} />} label="Task Scheduler" onClick={setPage} />
+          <NavButton page="tasks" active={page} icon={<CalendarClock size={20} />} label="任务计划程序" onClick={setPage} />
           <NavButton page="docker" active={page} icon={<Boxes size={20} />} label="Docker" onClick={setPage} />
         </nav>
       </aside>
       <main className="content">
         <header className="topbar">
           <h2>{title}</h2>
-          <button className="ghost-button" onClick={logout}><LogOut size={16} /> Sign out</button>
+          <button className="ghost-button" onClick={logout}><LogOut size={16} /> 退出登录</button>
         </header>
         {error && <p className="error banner">{error}</p>}
         {page === "tasks" ? (
@@ -246,7 +248,7 @@ export default function App() {
         )}
       </main>
       <nav className="bottom-nav">
-        <NavButton page="tasks" active={page} icon={<CalendarClock size={20} />} label="Task Scheduler" onClick={setPage} />
+        <NavButton page="tasks" active={page} icon={<CalendarClock size={20} />} label="任务计划程序" onClick={setPage} />
         <NavButton page="docker" active={page} icon={<Boxes size={20} />} label="Docker" onClick={setPage} />
       </nav>
     </div>

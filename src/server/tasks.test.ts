@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import { disableTask, listTasks, parseScheduledTaskJson, runTask, stopTask } from "./tasks";
 
-describe("parseScheduledTaskJson", () => {
-  it("maps PowerShell task JSON into task rows", () => {
+describe("任务计划程序输出解析", () => {
+  it("把 PowerShell 任务 JSON 映射为任务行", () => {
     const json = JSON.stringify([
       {
         Name: "Acme",
@@ -35,16 +35,19 @@ describe("parseScheduledTaskJson", () => {
   });
 });
 
-describe("Task actions", () => {
-  it("lists tasks with the configured folder", async () => {
+describe("任务计划程序操作", () => {
+  it("生成任务列表脚本时不在哈希表开头插入分号", async () => {
     const run = vi.fn().mockResolvedValue({ stdout: "[]", stderr: "", exitCode: 0 });
 
     await listTasks("\\Auto-Start-A\\", run);
 
-    expect(run.mock.calls[0][1].join(" ")).toContain("Get-ScheduledTask -TaskPath '\\Auto-Start-A\\'");
+    const encoded = run.mock.calls[0][1].at(-1) as string;
+    const decoded = Buffer.from(encoded, "base64").toString("utf16le");
+    expect(decoded).toContain("Get-ScheduledTask -TaskPath '\\Auto-Start-A\\'");
+    expect(decoded).toContain("[pscustomobject]@{\n    Name = $_.TaskName");
   });
 
-  it("runs only tasks returned by the current list", async () => {
+  it("只运行当前列表中存在的任务", async () => {
     const run = vi
       .fn()
       .mockResolvedValueOnce({ stdout: '[{"Name":"Acme","State":"Ready","LastRunTime":null,"LastTaskResult":0}]', stderr: "", exitCode: 0 })
@@ -52,17 +55,19 @@ describe("Task actions", () => {
 
     await runTask("\\Auto-Start-A\\", "Acme", run);
 
-    expect(run.mock.calls[1][1].join(" ")).toContain("Start-ScheduledTask");
-    expect(run.mock.calls[1][1].join(" ")).toContain("-TaskName 'Acme'");
+    const encoded = run.mock.calls[1][1].at(-1) as string;
+    const decoded = Buffer.from(encoded, "base64").toString("utf16le");
+    expect(decoded).toContain("Start-ScheduledTask");
+    expect(decoded).toContain("-TaskName 'Acme'");
   });
 
-  it("rejects stop for unknown tasks", async () => {
+  it("拒绝结束未知任务", async () => {
     const run = vi.fn().mockResolvedValue({ stdout: "[]", stderr: "", exitCode: 0 });
 
-    await expect(stopTask("\\Auto-Start-A\\", "Missing", run)).rejects.toThrow("Task not found");
+    await expect(stopTask("\\Auto-Start-A\\", "Missing", run)).rejects.toThrow("未找到任务");
   });
 
-  it("can disable a known task", async () => {
+  it("可以禁用已知任务", async () => {
     const run = vi
       .fn()
       .mockResolvedValueOnce({ stdout: '[{"Name":"Acme","State":"Ready","LastRunTime":null,"LastTaskResult":0}]', stderr: "", exitCode: 0 })
@@ -70,6 +75,8 @@ describe("Task actions", () => {
 
     await disableTask("\\Auto-Start-A\\", "Acme", run);
 
-    expect(run.mock.calls[1][1].join(" ")).toContain("Disable-ScheduledTask");
+    const encoded = run.mock.calls[1][1].at(-1) as string;
+    const decoded = Buffer.from(encoded, "base64").toString("utf16le");
+    expect(decoded).toContain("Disable-ScheduledTask");
   });
 });

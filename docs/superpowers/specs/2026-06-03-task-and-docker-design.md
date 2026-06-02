@@ -1,23 +1,23 @@
-# Task And Docker Design
+# 任务与 Docker 设计
 
-## Goal
+## 目标
 
-Build a Windows-native HTTP web app for managing a configured Windows Task Scheduler folder and local Docker containers. The app runs on the machine it manages. SSH is used only during development to validate command strategies against the target server.
+构建一个运行在 Windows 本机上的 HTTP 网页应用，用于管理一个配置好的 Windows 任务计划程序文件夹，以及本机 Docker 容器。应用运行在哪台机器上，就管理哪台机器上的资源。SSH 只用于开发期验证目标服务器上的命令方案。
 
-## Scope
+## 范围
 
-The app has two authenticated pages:
+应用包含两个需要登录后访问的页面：
 
-- Task Scheduler page: browse tasks in one configured folder, view name, state, last run time, and last run result, then run, stop, or disable a task.
-- Docker page: browse local containers, view name, image, ports, last started, and state, then start or stop a container.
+- 任务计划程序页面：浏览一个配置文件夹中的任务，查看名称、状态、上次运行时间、上次运行结果，并提供运行、结束、禁用操作。
+- Docker 页面：浏览本机容器，查看名称、镜像、端口、状态、上次启动时间，并提供启动、停止操作。
 
-The app does not create, edit, delete, import, export, or SSH-manage tasks or containers.
+应用不提供创建、编辑、删除、导入、导出，也不提供 SSH 管理功能。
 
-## Architecture
+## 架构
 
-Use a small Node.js and Express backend with a React, Vite, and TypeScript frontend. The backend owns all system access and serves JSON APIs. The frontend is a responsive operations console with desktop sidebar navigation and mobile bottom navigation.
+后端使用 Node.js 与 Express，前端使用 React、Vite 与 TypeScript。后端负责所有系统访问并提供 JSON API，前端负责响应式运维控制台界面。
 
-Windows Task Scheduler access uses PowerShell cmdlets on the local machine:
+任务计划程序访问使用本机 PowerShell 命令：
 
 - `Get-ScheduledTask`
 - `Get-ScheduledTaskInfo`
@@ -25,45 +25,45 @@ Windows Task Scheduler access uses PowerShell cmdlets on the local machine:
 - `Stop-ScheduledTask`
 - `Disable-ScheduledTask`
 
-Docker access uses the local Docker CLI:
+Docker 访问使用本机 Docker CLI：
 
 - `docker ps -a --format "{{json .}}"`
 - `docker start <id>`
 - `docker stop <id>`
 
-## Configuration
+## 配置
 
-Read `config/app.config.json` at startup. The config contains:
+启动时读取 `config/app.config.json`。配置包含：
 
-- HTTP host and port.
-- Plaintext password for the single app login.
-- Task Scheduler folder path, for example `\Auto-Start-A`.
+- HTTP 监听地址和端口。
+- 单密码登录使用的明文密码。
+- 任务计划程序文件夹路径，例如 `\Auto-Start-A`。
 
-The password is intentionally local-file based because this project requires that behavior. The README must warn users to set a strong password when exposing the HTTP app publicly.
+密码按项目要求写在本地配置文件中。README 必须提醒用户在公网暴露前改成强密码。
 
-## Authentication
+## 鉴权
 
-Use a password login backed by an HTTP-only same-site cookie session. Every API route except login and session status requires authentication. Failed login returns a generic error.
+使用密码登录和 HTTP-only、same-site 会话 Cookie。除登录和会话状态接口外，所有 API 都需要登录。密码错误时返回统一错误信息。
 
-## Safety
+## 安全
 
-The backend must not directly trust task names or container IDs from request paths. For each action, it first lists the current manageable resources, confirms the requested task/container exists, then runs the operation.
+后端不能直接信任请求路径里的任务名或容器 ID。每次执行操作前，后端都先读取当前可管理资源列表，确认目标存在后再执行操作。
 
-Command execution uses argument arrays rather than shell string concatenation where possible.
+命令执行尽量使用参数数组。PowerShell 脚本通过 `-EncodedCommand` 传入，避免 `$_.TaskName` 这类表达式被外层 shell 二次解析。
 
-## UI
+## 界面
 
-Desktop layout uses a left sidebar and content area. Mobile layout uses a fixed bottom navigation and content area. Tables collapse into compact list cards on small screens.
+桌面端使用左侧导航栏加内容区。手机端使用固定底部导航栏加内容区。表格在小屏幕上折叠成紧凑列表，避免横向溢出。
 
-The interface is restrained, work-focused, and data-first. It uses clear status labels, loading states, error messages, and confirmation dialogs for stop, disable, and end actions.
+界面风格克制、清晰、数据优先。状态、加载、错误和确认弹窗都必须明确。
 
-## Verification Findings
+## 验证结论
 
-Development-time SSH verification against `ms-7d30.ssh.lvshuhuai.cn` confirmed:
+开发期通过 SSH 连接 `ms-7d30.ssh.lvshuhuai.cn` 验证：
 
-- `Get-ScheduledTask -TaskPath '\Auto-Start-A\'` can list tasks.
-- `Get-ScheduledTaskInfo` can return last run time and result.
-- `Start-ScheduledTask`, `Stop-ScheduledTask`, and `Disable-ScheduledTask` are available.
-- `docker ps -a --format "{{json .}}"` returns JSON lines with container names, images, ports, status, state, and running age.
+- `Get-ScheduledTask -TaskPath '\Auto-Start-A\'` 可以列出任务。
+- `Get-ScheduledTaskInfo` 可以返回上次运行时间和运行结果。
+- `Start-ScheduledTask`、`Stop-ScheduledTask`、`Disable-ScheduledTask` 可用。
+- `docker ps -a --format "{{json .}}"` 可以返回容器名称、镜像、端口、状态和运行时间等 JSON 行。
 
-The final app must not include SSH code.
+最终应用不包含 SSH 代码。

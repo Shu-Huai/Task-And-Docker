@@ -1,82 +1,82 @@
-# Task And Docker Implementation Plan
+# 任务与 Docker 实施计划
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **给自动化开发代理：** 需要按任务逐项执行。每个任务使用 checkbox 语法跟踪状态，并在完成后提交。
 
-**Goal:** Build a Windows-native authenticated web app for managing one configured Task Scheduler folder and local Docker containers.
+**目标：** 构建一个 Windows 本机运行的认证网页应用，用于管理一个配置的任务计划程序文件夹和本机 Docker 容器。
 
-**Architecture:** A TypeScript Express backend exposes authenticated APIs and wraps local PowerShell/Docker CLI calls. A React/Vite frontend renders two responsive management pages and calls those APIs.
+**架构：** TypeScript Express 后端提供认证 API，并包装本机 PowerShell 与 Docker CLI。React/Vite 前端渲染两个响应式管理页面并调用这些 API。
 
-**Tech Stack:** Node.js, TypeScript, Express, express-session, React, Vite, Vitest, Testing Library, Supertest, Lucide React.
+**技术栈：** Node.js、TypeScript、Express、express-session、React、Vite、Vitest、Testing Library、Supertest、Lucide React。
 
 ---
 
-### Task 1: Repository And Config
+### 任务 1：仓库与配置
 
-**Files:**
-- Create: `package.json`
-- Create: `tsconfig.json`
-- Create: `vite.config.ts`
-- Create: `vitest.config.ts`
-- Create: `config/app.config.json`
-- Create: `.gitignore`
+**文件：**
+- 新建：`package.json`
+- 新建：`tsconfig.json`
+- 新建：`vite.config.ts`
+- 新建：`vitest.config.ts`
+- 新建：`config/app.config.json`
+- 新建：`.gitignore`
 
-- [ ] Add project tooling and local configuration.
-- [ ] Commit with `chore: initialize project tooling`.
+- [ ] 添加项目工具链和本地配置。
+- [ ] 提交信息：`chore: initialize project tooling`。
 
-### Task 2: Backend System Wrappers
+### 任务 2：后端系统包装器
 
-**Files:**
-- Create: `src/server/config.ts`
-- Create: `src/server/command.ts`
-- Create: `src/server/tasks.ts`
-- Create: `src/server/docker.ts`
-- Test: `src/server/*.test.ts`
+**文件：**
+- 新建：`src/server/config.ts`
+- 新建：`src/server/command.ts`
+- 新建：`src/server/tasks.ts`
+- 新建：`src/server/docker.ts`
+- 测试：`src/server/*.test.ts`
 
-- [ ] Write failing tests for config loading, Docker JSON parsing, Task Scheduler output mapping, and resource action validation.
-- [ ] Implement minimal backend wrappers.
-- [ ] Run targeted Vitest tests.
-- [ ] Commit with `feat: add system resource wrappers`.
+- [ ] 编写配置加载、Docker JSON 解析、任务计划程序输出映射、资源操作校验的失败测试。
+- [ ] 实现最小后端包装器。
+- [ ] 运行定向 Vitest 测试。
+- [ ] 提交信息：`feat: add system resource wrappers`。
 
-### Task 3: Backend API And Auth
+### 任务 3：后端 API 与鉴权
 
-**Files:**
-- Create: `src/server/app.ts`
-- Create: `src/server/index.ts`
-- Test: `src/server/app.test.ts`
+**文件：**
+- 新建：`src/server/app.ts`
+- 新建：`src/server/index.ts`
+- 测试：`src/server/app.test.ts`
 
-- [ ] Write failing tests for login, protected APIs, task actions, and Docker actions.
-- [ ] Implement Express session auth and routes.
-- [ ] Run backend tests.
-- [ ] Commit with `feat: add authenticated api`.
+- [ ] 编写登录、受保护 API、任务操作、Docker 操作的失败测试。
+- [ ] 实现 Express 会话鉴权和路由。
+- [ ] 运行后端测试。
+- [ ] 提交信息：`feat: add authenticated api`。
 
-### Task 4: Frontend Application
+### 任务 4：前端应用
 
-**Files:**
-- Create: `index.html`
-- Create: `src/client/main.tsx`
-- Create: `src/client/App.tsx`
-- Create: `src/client/api.ts`
-- Create: `src/client/styles.css`
+**文件：**
+- 新建：`index.html`
+- 新建：`src/client/main.tsx`
+- 新建：`src/client/App.tsx`
+- 新建：`src/client/api.ts`
+- 新建：`src/client/styles.css`
 
-- [ ] Write failing component tests for login, navigation labels, and resource action rendering.
-- [ ] Implement responsive app shell, task page, Docker page, and interaction states.
-- [ ] Run frontend tests and build.
-- [ ] Commit with `feat: build responsive management UI`.
+- [ ] 编写登录、导航标签、资源操作渲染的失败组件测试。
+- [ ] 实现响应式应用外壳、任务页面、Docker 页面和交互状态。
+- [ ] 运行前端测试和构建。
+- [ ] 提交信息：`feat: build responsive management UI`。
 
-### Task 5: README And Graphify
+### 任务 5：README 与 Graphify
 
-**Files:**
-- Create: `README.md`
-- Generated: `graphify-out/*`
+**文件：**
+- 新建：`README.md`
+- 生成：`graphify-out/*`
 
-- [ ] Write README with setup, config, Windows runtime notes, and security notes.
-- [ ] Run Graphify on the project to generate architecture graph outputs.
-- [ ] Commit documentation and graph outputs.
+- [ ] 编写 README，包含安装、配置、Windows 运行说明和安全说明。
+- [ ] 运行 Graphify 生成项目架构图谱输出。
+- [ ] 提交文档和图谱输出。
 
-### Task 6: Branch Integration
+### 任务 6：分支集成
 
-- [ ] Create `dev` and feature branches for the implementation history.
-- [ ] Merge feature branches into `dev`.
-- [ ] Merge `dev` into `master`.
-- [ ] Add remote `https://github.com/Shu-Huai/Task-And-Docker.git`.
-- [ ] Push `master`, `dev`, and feature branches if authentication is available.
+- [ ] 创建 `dev` 和各个 `feature/*` 分支。
+- [ ] 将功能分支合并到 `dev`。
+- [ ] 将 `dev` 合并到 `master`。
+- [ ] 添加远程仓库 `https://github.com/Shu-Huai/Task-And-Docker.git`。
+- [ ] 如果认证可用，推送 `master`、`dev` 和功能分支。
