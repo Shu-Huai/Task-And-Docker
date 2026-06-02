@@ -50,7 +50,6 @@ export function parseScheduledTaskJson(stdout: string): ScheduledTask[] {
 export async function listTasks(folder: string, runner?: CommandRunner): Promise<ScheduledTask[]> {
   const taskPath = normalizeTaskFolder(folder);
   const script = [
-    "$ProgressPreference = 'SilentlyContinue'",
     `Get-ScheduledTask -TaskPath '${escapePowerShellSingleQuoted(taskPath)}' | ForEach-Object {`,
     "  $info = Get-ScheduledTaskInfo -TaskName $_.TaskName -TaskPath $_.TaskPath",
     "  [pscustomobject]@{",
@@ -60,10 +59,10 @@ export async function listTasks(folder: string, runner?: CommandRunner): Promise
     "    LastTaskResult = $info.LastTaskResult",
     "  }",
     "} | ConvertTo-Json -Depth 3 -Compress"
-  ].join("; ");
+  ].join("\n");
   const result = await runPowerShell(script, runner);
   if (result.exitCode !== 0) {
-    throw new Error(result.stderr || "Unable to list scheduled tasks");
+    throw new Error(result.stderr || "无法读取任务计划程序任务");
   }
   return parseScheduledTaskJson(result.stdout);
 }
@@ -71,7 +70,7 @@ export async function listTasks(folder: string, runner?: CommandRunner): Promise
 async function assertTaskExists(folder: string, taskName: string, runner?: CommandRunner): Promise<void> {
   const tasks = await listTasks(folder, runner);
   if (!tasks.some((task) => task.name === taskName)) {
-    throw new Error("Task not found");
+    throw new Error("未找到任务");
   }
 }
 
@@ -86,7 +85,7 @@ async function runTaskCommand(
   const script = `${command} -TaskPath '${escapePowerShellSingleQuoted(taskPath)}' -TaskName '${escapePowerShellSingleQuoted(taskName)}'`;
   const result = await runPowerShell(script, runner);
   if (result.exitCode !== 0) {
-    throw new Error(result.stderr || `Unable to run ${command}`);
+    throw new Error(result.stderr || `无法执行任务命令 ${command}`);
   }
 }
 

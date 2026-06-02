@@ -30,11 +30,20 @@ export const runCommand: CommandRunner = (command, args) => {
 };
 
 export async function runPowerShell(script: string, runner: CommandRunner = runCommand): Promise<CommandResult> {
+  const encodedScript = Buffer.from(
+    [
+      "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8",
+      "$OutputEncoding = [System.Text.Encoding]::UTF8",
+      "$ProgressPreference = 'SilentlyContinue'",
+      script
+    ].join("\n"),
+    "utf16le"
+  ).toString("base64");
   return runner("powershell.exe", [
     "-NoProfile",
     "-ExecutionPolicy",
     "Bypass",
-    "-Command",
-    script
+    "-EncodedCommand",
+    encodedScript
   ]);
 }
