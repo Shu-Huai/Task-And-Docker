@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import { listContainers, parseDockerPsJsonLines, startContainer, stopContainer } from "./docker";
 
-describe("parseDockerPsJsonLines", () => {
-  it("maps Docker JSON lines into container rows", () => {
+describe("Docker 输出解析", () => {
+  it("把 Docker JSON 行映射为容器行", () => {
     const lines = [
       JSON.stringify({
         ID: "671e293cb894",
@@ -47,8 +47,8 @@ describe("parseDockerPsJsonLines", () => {
   });
 });
 
-describe("Docker actions", () => {
-  it("starts only containers returned by the current list", async () => {
+describe("Docker 操作", () => {
+  it("只启动当前列表中存在的容器", async () => {
     const run = vi
       .fn()
       .mockResolvedValueOnce({ stdout: '{"ID":"abc123","Names":"db","Image":"postgres","Ports":"","RunningFor":"1 day ago","State":"exited","Status":"Exited"}', stderr: "", exitCode: 0 })
@@ -59,13 +59,13 @@ describe("Docker actions", () => {
     expect(run).toHaveBeenNthCalledWith(2, "docker", ["start", "abc123"]);
   });
 
-  it("rejects stop for an unknown container id", async () => {
+  it("拒绝停止未知容器", async () => {
     const run = vi.fn().mockResolvedValue({ stdout: "", stderr: "", exitCode: 0 });
 
-    await expect(stopContainer("missing", run)).rejects.toThrow("Container not found");
+    await expect(stopContainer("missing", run)).rejects.toThrow("未找到容器");
   });
 
-  it("lists containers using docker ps", async () => {
+  it("使用 docker ps 列出容器", async () => {
     const run = vi.fn().mockResolvedValue({ stdout: "", stderr: "", exitCode: 0 });
 
     await listContainers(run);

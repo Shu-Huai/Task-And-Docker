@@ -53,7 +53,7 @@ function defaultServices(): AppServices {
 function asyncRoute(handler: (req: Request, res: Response) => Promise<void>) {
   return (req: Request, res: Response) => {
     handler(req, res).catch((error: unknown) => {
-      const message = error instanceof Error ? error.message : "Unexpected error";
+      const message = error instanceof Error ? error.message : "发生未知错误";
       res.status(500).json({ error: message });
     });
   };
@@ -88,7 +88,7 @@ export function createApp({ config, services: serviceOverrides = {}, staticDir }
 
   app.post("/api/auth/login", (req, res) => {
     if (req.body?.password !== config.auth.password) {
-      res.status(401).json({ error: "Invalid password" });
+      res.status(401).json({ error: "密码错误" });
       return;
     }
     req.session.authenticated = true;
@@ -103,7 +103,7 @@ export function createApp({ config, services: serviceOverrides = {}, staticDir }
 
   app.use("/api", (req, res, next) => {
     if (!req.session.authenticated) {
-      res.status(401).json({ error: "Authentication required" });
+      res.status(401).json({ error: "需要先登录" });
       return;
     }
     next();

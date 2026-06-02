@@ -28,8 +28,8 @@ function makeApp() {
   });
 }
 
-describe("createApp", () => {
-  it("protects resource APIs before login", async () => {
+describe("应用服务", () => {
+  it("未登录时保护资源接口", async () => {
     const { app } = makeApp();
 
     const response = await request(app).get("/api/tasks");
@@ -37,7 +37,7 @@ describe("createApp", () => {
     expect(response.status).toBe(401);
   });
 
-  it("logs in with the configured password and returns current session", async () => {
+  it("使用配置密码登录并返回当前会话", async () => {
     const { app } = makeApp();
     const agent = request.agent(app);
 
@@ -48,16 +48,16 @@ describe("createApp", () => {
     expect(me.body).toEqual({ authenticated: true });
   });
 
-  it("rejects an incorrect password", async () => {
+  it("拒绝错误密码", async () => {
     const { app } = makeApp();
 
     const response = await request(app).post("/api/auth/login").send({ password: "wrong" });
 
     expect(response.status).toBe(401);
-    expect(response.body.error).toBe("Invalid password");
+    expect(response.body.error).toBe("密码错误");
   });
 
-  it("lists tasks using the configured task folder", async () => {
+  it("使用配置的任务文件夹列出任务", async () => {
     const { app, services } = makeApp();
     const agent = request.agent(app);
     await agent.post("/api/auth/login").send({ password: "secret" });
@@ -69,7 +69,7 @@ describe("createApp", () => {
     expect(services.listTasks).toHaveBeenCalledWith("\\Auto-Start-A\\");
   });
 
-  it("runs, stops, and disables tasks", async () => {
+  it("运行、结束并禁用任务", async () => {
     const { app, services } = makeApp();
     const agent = request.agent(app);
     await agent.post("/api/auth/login").send({ password: "secret" });
@@ -83,7 +83,7 @@ describe("createApp", () => {
     expect(services.disableTask).toHaveBeenCalledWith("\\Auto-Start-A\\", "Acme");
   });
 
-  it("lists and controls Docker containers", async () => {
+  it("列出并控制 Docker 容器", async () => {
     const { app, services } = makeApp();
     const agent = request.agent(app);
     await agent.post("/api/auth/login").send({ password: "secret" });
@@ -97,7 +97,7 @@ describe("createApp", () => {
     expect(services.stopContainer).toHaveBeenCalledWith("abc123");
   });
 
-  it("logs out", async () => {
+  it("退出登录", async () => {
     const { app } = makeApp();
     const agent = request.agent(app);
     await agent.post("/api/auth/login").send({ password: "secret" });
@@ -108,14 +108,14 @@ describe("createApp", () => {
     expect(me.body).toEqual({ authenticated: false });
   });
 
-  it("serves the built frontend when a static directory is provided", async () => {
+  it("提供静态目录时托管构建后的前端", async () => {
     const staticDir = mkdtempSync(join(tmpdir(), "task-docker-static-"));
-    writeFileSync(join(staticDir, "index.html"), "<!doctype html><title>Task And Docker</title>");
+    writeFileSync(join(staticDir, "index.html"), "<!doctype html><title>任务与 Docker</title>");
     const { app } = createApp({ config, staticDir });
 
     const response = await request(app).get("/");
 
     expect(response.status).toBe(200);
-    expect(response.text).toContain("Task And Docker");
+    expect(response.text).toContain("任务与 Docker");
   });
 });
