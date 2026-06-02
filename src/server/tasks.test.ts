@@ -47,6 +47,16 @@ describe("任务计划程序操作", () => {
     expect(decoded).toContain("[pscustomobject]@{\n    Name = $_.TaskName");
   });
 
+  it("任务文件夹不存在时返回空列表", async () => {
+    const run = vi.fn().mockResolvedValue({
+      stdout: "",
+      stderr: "FullyQualifiedErrorId : CmdletizationQuery_NotFound_TaskPath,Get-ScheduledTask",
+      exitCode: 1
+    });
+
+    await expect(listTasks("\\Auto-Start-A\\", run)).resolves.toEqual([]);
+  });
+
   it("只运行当前列表中存在的任务", async () => {
     const run = vi
       .fn()
