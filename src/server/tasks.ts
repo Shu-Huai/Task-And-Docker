@@ -61,6 +61,9 @@ export async function listTasks(folder: string, runner?: CommandRunner): Promise
     "} | ConvertTo-Json -Depth 3 -Compress"
   ].join("\n");
   const result = await runPowerShell(script, runner);
+  if (result.exitCode !== 0 && result.stderr.includes("CmdletizationQuery_NotFound_TaskPath")) {
+    return [];
+  }
   if (result.exitCode !== 0) {
     throw new Error(result.stderr || "无法读取任务计划程序任务");
   }
