@@ -1,4 +1,7 @@
 import request from "supertest";
+import { mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import { createApp } from "./app";
 import type { AppConfig } from "./config";
@@ -103,5 +106,16 @@ describe("createApp", () => {
     const me = await agent.get("/api/me");
 
     expect(me.body).toEqual({ authenticated: false });
+  });
+
+  it("serves the built frontend when a static directory is provided", async () => {
+    const staticDir = mkdtempSync(join(tmpdir(), "task-docker-static-"));
+    writeFileSync(join(staticDir, "index.html"), "<!doctype html><title>Task And Docker</title>");
+    const { app } = createApp({ config, staticDir });
+
+    const response = await request(app).get("/");
+
+    expect(response.status).toBe(200);
+    expect(response.text).toContain("Task And Docker");
   });
 });

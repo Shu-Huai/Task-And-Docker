@@ -1,0 +1,3413 @@
+{
+  "nodes": [
+    {
+      "id": "src_client_api_ts",
+      "label": "api.ts",
+      "file_type": "code",
+      "source_file": "src\\client\\api.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "client_api_taskrow",
+      "label": "TaskRow",
+      "file_type": "code",
+      "source_file": "src\\client\\api.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "client_api_containerrow",
+      "label": "ContainerRow",
+      "file_type": "code",
+      "source_file": "src\\client\\api.ts",
+      "source_location": "L8"
+    },
+    {
+      "id": "client_api_requestjson",
+      "label": "requestJson()",
+      "file_type": "code",
+      "source_file": "src\\client\\api.ts",
+      "source_location": "L18"
+    },
+    {
+      "id": "client_api_api",
+      "label": "api",
+      "file_type": "code",
+      "source_file": "src\\client\\api.ts",
+      "source_location": "L31"
+    },
+    {
+      "id": "src_client_app_test_tsx",
+      "label": "App.test.tsx",
+      "file_type": "code",
+      "source_file": "src\\client\\App.test.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "client_app_test_jsonresponse",
+      "label": "jsonResponse()",
+      "file_type": "code",
+      "source_file": "src\\client\\App.test.tsx",
+      "source_location": "L6"
+    },
+    {
+      "id": "src_client_app_tsx",
+      "label": "App.tsx",
+      "file_type": "code",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "client_app_page",
+      "label": "Page",
+      "file_type": "code",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L5"
+    },
+    {
+      "id": "client_app_stateclass",
+      "label": "stateClass()",
+      "file_type": "code",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L7"
+    },
+    {
+      "id": "client_app_formattime",
+      "label": "formatTime()",
+      "file_type": "code",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L15"
+    },
+    {
+      "id": "client_app_navbutton",
+      "label": "NavButton()",
+      "file_type": "code",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L21"
+    },
+    {
+      "id": "client_app_login",
+      "label": "Login()",
+      "file_type": "code",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L30"
+    },
+    {
+      "id": "client_app_taskspage",
+      "label": "TasksPage()",
+      "file_type": "code",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L69"
+    },
+    {
+      "id": "client_app_dockerpage",
+      "label": "DockerPage()",
+      "file_type": "code",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L105"
+    },
+    {
+      "id": "client_app_app",
+      "label": "App()",
+      "file_type": "code",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L140"
+    },
+    {
+      "id": "src_client_main_tsx",
+      "label": "main.tsx",
+      "file_type": "code",
+      "source_file": "src\\client\\main.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_server_app_test_ts",
+      "label": "app.test.ts",
+      "file_type": "code",
+      "source_file": "src\\server\\app.test.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_app_test_config",
+      "label": "config",
+      "file_type": "code",
+      "source_file": "src\\server\\app.test.ts",
+      "source_location": "L6"
+    },
+    {
+      "id": "server_app_test_makeapp",
+      "label": "makeApp()",
+      "file_type": "code",
+      "source_file": "src\\server\\app.test.ts",
+      "source_location": "L13"
+    },
+    {
+      "id": "src_server_app_ts",
+      "label": "app.ts",
+      "file_type": "code",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_app_sessiondata",
+      "label": "SessionData",
+      "file_type": "code",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L20"
+    },
+    {
+      "id": "server_app_appservices",
+      "label": "AppServices",
+      "file_type": "code",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L25"
+    },
+    {
+      "id": "server_app_createappoptions",
+      "label": "CreateAppOptions",
+      "file_type": "code",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L35"
+    },
+    {
+      "id": "server_app_defaultservices",
+      "label": "defaultServices()",
+      "file_type": "code",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L40"
+    },
+    {
+      "id": "server_app_asyncroute",
+      "label": "asyncRoute()",
+      "file_type": "code",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L52"
+    },
+    {
+      "id": "server_app_paramasstring",
+      "label": "paramAsString()",
+      "file_type": "code",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L61"
+    },
+    {
+      "id": "server_app_createapp",
+      "label": "createApp()",
+      "file_type": "code",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L65"
+    },
+    {
+      "id": "src_server_command_ts",
+      "label": "command.ts",
+      "file_type": "code",
+      "source_file": "src\\server\\command.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_command_commandresult",
+      "label": "CommandResult",
+      "file_type": "code",
+      "source_file": "src\\server\\command.ts",
+      "source_location": "L3"
+    },
+    {
+      "id": "server_command_commandrunner",
+      "label": "CommandRunner",
+      "file_type": "code",
+      "source_file": "src\\server\\command.ts",
+      "source_location": "L9"
+    },
+    {
+      "id": "server_command_runcommand",
+      "label": "runCommand()",
+      "file_type": "code",
+      "source_file": "src\\server\\command.ts",
+      "source_location": "L11"
+    },
+    {
+      "id": "server_command_runpowershell",
+      "label": "runPowerShell()",
+      "file_type": "code",
+      "source_file": "src\\server\\command.ts",
+      "source_location": "L32"
+    },
+    {
+      "id": "src_server_config_test_ts",
+      "label": "config.test.ts",
+      "file_type": "code",
+      "source_file": "src\\server\\config.test.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_server_config_ts",
+      "label": "config.ts",
+      "file_type": "code",
+      "source_file": "src\\server\\config.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_config_configschema",
+      "label": "ConfigSchema",
+      "file_type": "code",
+      "source_file": "src\\server\\config.ts",
+      "source_location": "L5"
+    },
+    {
+      "id": "server_config_appconfig",
+      "label": "AppConfig",
+      "file_type": "code",
+      "source_file": "src\\server\\config.ts",
+      "source_location": "L21"
+    },
+    {
+      "id": "server_config_normalizetaskfolder",
+      "label": "normalizeTaskFolder()",
+      "file_type": "code",
+      "source_file": "src\\server\\config.ts",
+      "source_location": "L23"
+    },
+    {
+      "id": "server_config_loadconfig",
+      "label": "loadConfig()",
+      "file_type": "code",
+      "source_file": "src\\server\\config.ts",
+      "source_location": "L29"
+    },
+    {
+      "id": "src_server_docker_test_ts",
+      "label": "docker.test.ts",
+      "file_type": "code",
+      "source_file": "src\\server\\docker.test.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_server_docker_ts",
+      "label": "docker.ts",
+      "file_type": "code",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_docker_dockercontainer",
+      "label": "DockerContainer",
+      "file_type": "code",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L4"
+    },
+    {
+      "id": "server_docker_dockerpsline",
+      "label": "DockerPsLine",
+      "file_type": "code",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L14"
+    },
+    {
+      "id": "server_docker_parsedockerpsjsonlines",
+      "label": "parseDockerPsJsonLines()",
+      "file_type": "code",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L24"
+    },
+    {
+      "id": "server_docker_listcontainers",
+      "label": "listContainers()",
+      "file_type": "code",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L41"
+    },
+    {
+      "id": "server_docker_assertcontainerexists",
+      "label": "assertContainerExists()",
+      "file_type": "code",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L49"
+    },
+    {
+      "id": "server_docker_startcontainer",
+      "label": "startContainer()",
+      "file_type": "code",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L56"
+    },
+    {
+      "id": "server_docker_stopcontainer",
+      "label": "stopContainer()",
+      "file_type": "code",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L64"
+    },
+    {
+      "id": "src_server_index_ts",
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "src\\server\\index.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_index_config",
+      "label": "config",
+      "file_type": "code",
+      "source_file": "src\\server\\index.ts",
+      "source_location": "L4"
+    },
+    {
+      "id": "server_index_app",
+      "label": "{ app }",
+      "file_type": "code",
+      "source_file": "src\\server\\index.ts",
+      "source_location": "L5"
+    },
+    {
+      "id": "src_server_tasks_test_ts",
+      "label": "tasks.test.ts",
+      "file_type": "code",
+      "source_file": "src\\server\\tasks.test.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_server_tasks_ts",
+      "label": "tasks.ts",
+      "file_type": "code",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_tasks_scheduledtask",
+      "label": "ScheduledTask",
+      "file_type": "code",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L5"
+    },
+    {
+      "id": "server_tasks_powershelltask",
+      "label": "PowerShellTask",
+      "file_type": "code",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L12"
+    },
+    {
+      "id": "server_tasks_parsepowershelldate",
+      "label": "parsePowerShellDate()",
+      "file_type": "code",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L19"
+    },
+    {
+      "id": "server_tasks_escapepowershellsinglequoted",
+      "label": "escapePowerShellSingleQuoted()",
+      "file_type": "code",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L31"
+    },
+    {
+      "id": "server_tasks_parsescheduledtaskjson",
+      "label": "parseScheduledTaskJson()",
+      "file_type": "code",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L35"
+    },
+    {
+      "id": "server_tasks_listtasks",
+      "label": "listTasks()",
+      "file_type": "code",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L50"
+    },
+    {
+      "id": "server_tasks_asserttaskexists",
+      "label": "assertTaskExists()",
+      "file_type": "code",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L71"
+    },
+    {
+      "id": "server_tasks_runtaskcommand",
+      "label": "runTaskCommand()",
+      "file_type": "code",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L78"
+    },
+    {
+      "id": "server_tasks_runtask",
+      "label": "runTask()",
+      "file_type": "code",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L93"
+    },
+    {
+      "id": "server_tasks_stoptask",
+      "label": "stopTask()",
+      "file_type": "code",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L97"
+    },
+    {
+      "id": "server_tasks_disabletask",
+      "label": "disableTask()",
+      "file_type": "code",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L101"
+    },
+    {
+      "id": "src_test_setup_ts",
+      "label": "setup.ts",
+      "file_type": "code",
+      "source_file": "src\\test\\setup.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "config_app_config_json",
+      "label": "app.config.json",
+      "file_type": "code",
+      "source_file": "config\\app.config.json",
+      "source_location": "L1"
+    },
+    {
+      "id": "config_app_config_server",
+      "label": "server",
+      "file_type": "code",
+      "source_file": "config\\app.config.json",
+      "source_location": "L2"
+    },
+    {
+      "id": "config_app_config_server_host",
+      "label": "host",
+      "file_type": "code",
+      "source_file": "config\\app.config.json",
+      "source_location": "L3"
+    },
+    {
+      "id": "config_app_config_server_port",
+      "label": "port",
+      "file_type": "code",
+      "source_file": "config\\app.config.json",
+      "source_location": "L4"
+    },
+    {
+      "id": "config_app_config_auth",
+      "label": "auth",
+      "file_type": "code",
+      "source_file": "config\\app.config.json",
+      "source_location": "L6"
+    },
+    {
+      "id": "config_app_config_auth_password",
+      "label": "password",
+      "file_type": "code",
+      "source_file": "config\\app.config.json",
+      "source_location": "L7"
+    },
+    {
+      "id": "config_app_config_tasks",
+      "label": "tasks",
+      "file_type": "code",
+      "source_file": "config\\app.config.json",
+      "source_location": "L9"
+    },
+    {
+      "id": "config_app_config_tasks_folder",
+      "label": "folder",
+      "file_type": "code",
+      "source_file": "config\\app.config.json",
+      "source_location": "L10"
+    },
+    {
+      "id": "config_app_config_docker",
+      "label": "docker",
+      "file_type": "code",
+      "source_file": "config\\app.config.json",
+      "source_location": "L12"
+    },
+    {
+      "id": "config_app_config_docker_enabled",
+      "label": "enabled",
+      "file_type": "code",
+      "source_file": "config\\app.config.json",
+      "source_location": "L13"
+    },
+    {
+      "id": "docs_superpowers_plans_2026_06_03_task_and_docker_md",
+      "label": "2026-06-03-task-and-docker.md",
+      "file_type": "document",
+      "source_file": "docs\\superpowers\\plans\\2026-06-03-task-and-docker.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_03_task_and_docker_task_and_docker_implementation_plan",
+      "label": "Task And Docker Implementation Plan",
+      "file_type": "document",
+      "source_file": "docs\\superpowers\\plans\\2026-06-03-task-and-docker.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_03_task_and_docker_task_1_repository_and_config",
+      "label": "Task 1: Repository And Config",
+      "file_type": "document",
+      "source_file": "docs\\superpowers\\plans\\2026-06-03-task-and-docker.md",
+      "source_location": "L13"
+    },
+    {
+      "id": "plans_2026_06_03_task_and_docker_task_2_backend_system_wrappers",
+      "label": "Task 2: Backend System Wrappers",
+      "file_type": "document",
+      "source_file": "docs\\superpowers\\plans\\2026-06-03-task-and-docker.md",
+      "source_location": "L26"
+    },
+    {
+      "id": "plans_2026_06_03_task_and_docker_task_3_backend_api_and_auth",
+      "label": "Task 3: Backend API And Auth",
+      "file_type": "document",
+      "source_file": "docs\\superpowers\\plans\\2026-06-03-task-and-docker.md",
+      "source_location": "L40"
+    },
+    {
+      "id": "plans_2026_06_03_task_and_docker_task_4_frontend_application",
+      "label": "Task 4: Frontend Application",
+      "file_type": "document",
+      "source_file": "docs\\superpowers\\plans\\2026-06-03-task-and-docker.md",
+      "source_location": "L52"
+    },
+    {
+      "id": "plans_2026_06_03_task_and_docker_task_5_readme_and_graphify",
+      "label": "Task 5: README And Graphify",
+      "file_type": "document",
+      "source_file": "docs\\superpowers\\plans\\2026-06-03-task-and-docker.md",
+      "source_location": "L66"
+    },
+    {
+      "id": "plans_2026_06_03_task_and_docker_task_6_branch_integration",
+      "label": "Task 6: Branch Integration",
+      "file_type": "document",
+      "source_file": "docs\\superpowers\\plans\\2026-06-03-task-and-docker.md",
+      "source_location": "L76"
+    },
+    {
+      "id": "docs_superpowers_specs_2026_06_03_task_and_docker_design_md",
+      "label": "2026-06-03-task-and-docker-design.md",
+      "file_type": "document",
+      "source_file": "docs\\superpowers\\specs\\2026-06-03-task-and-docker-design.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "specs_2026_06_03_task_and_docker_design_task_and_docker_design",
+      "label": "Task And Docker Design",
+      "file_type": "document",
+      "source_file": "docs\\superpowers\\specs\\2026-06-03-task-and-docker-design.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "specs_2026_06_03_task_and_docker_design_goal",
+      "label": "Goal",
+      "file_type": "document",
+      "source_file": "docs\\superpowers\\specs\\2026-06-03-task-and-docker-design.md",
+      "source_location": "L3"
+    },
+    {
+      "id": "specs_2026_06_03_task_and_docker_design_scope",
+      "label": "Scope",
+      "file_type": "document",
+      "source_file": "docs\\superpowers\\specs\\2026-06-03-task-and-docker-design.md",
+      "source_location": "L7"
+    },
+    {
+      "id": "specs_2026_06_03_task_and_docker_design_architecture",
+      "label": "Architecture",
+      "file_type": "document",
+      "source_file": "docs\\superpowers\\specs\\2026-06-03-task-and-docker-design.md",
+      "source_location": "L16"
+    },
+    {
+      "id": "specs_2026_06_03_task_and_docker_design_configuration",
+      "label": "Configuration",
+      "file_type": "document",
+      "source_file": "docs\\superpowers\\specs\\2026-06-03-task-and-docker-design.md",
+      "source_location": "L34"
+    },
+    {
+      "id": "specs_2026_06_03_task_and_docker_design_authentication",
+      "label": "Authentication",
+      "file_type": "document",
+      "source_file": "docs\\superpowers\\specs\\2026-06-03-task-and-docker-design.md",
+      "source_location": "L44"
+    },
+    {
+      "id": "specs_2026_06_03_task_and_docker_design_safety",
+      "label": "Safety",
+      "file_type": "document",
+      "source_file": "docs\\superpowers\\specs\\2026-06-03-task-and-docker-design.md",
+      "source_location": "L48"
+    },
+    {
+      "id": "specs_2026_06_03_task_and_docker_design_ui",
+      "label": "UI",
+      "file_type": "document",
+      "source_file": "docs\\superpowers\\specs\\2026-06-03-task-and-docker-design.md",
+      "source_location": "L54"
+    },
+    {
+      "id": "specs_2026_06_03_task_and_docker_design_verification_findings",
+      "label": "Verification Findings",
+      "file_type": "document",
+      "source_file": "docs\\superpowers\\specs\\2026-06-03-task-and-docker-design.md",
+      "source_location": "L60"
+    },
+    {
+      "id": "readme_md",
+      "label": "README.md",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "readme_task_and_docker",
+      "label": "Task And Docker",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "readme_features",
+      "label": "Features",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L10"
+    },
+    {
+      "id": "readme_requirements",
+      "label": "Requirements",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L19"
+    },
+    {
+      "id": "readme_configuration",
+      "label": "Configuration",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L26"
+    },
+    {
+      "id": "readme_development",
+      "label": "Development",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L51"
+    },
+    {
+      "id": "readme_verification",
+      "label": "Verification",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L73"
+    },
+    {
+      "id": "readme_runtime_notes",
+      "label": "Runtime Notes",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L87"
+    },
+    {
+      "id": "readme_git_workflow",
+      "label": "Git Workflow",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L96"
+    },
+    {
+      "id": "package_json",
+      "label": "package.json",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L1"
+    },
+    {
+      "id": "package_name",
+      "label": "name",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L2"
+    },
+    {
+      "id": "package_version",
+      "label": "version",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L3"
+    },
+    {
+      "id": "package_private",
+      "label": "private",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L4"
+    },
+    {
+      "id": "package_type",
+      "label": "type",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L5"
+    },
+    {
+      "id": "package_scripts",
+      "label": "scripts",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L6"
+    },
+    {
+      "id": "package_scripts_dev",
+      "label": "dev",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L7"
+    },
+    {
+      "id": "package_scripts_dev_client",
+      "label": "dev:client",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L8"
+    },
+    {
+      "id": "package_scripts_dev_server",
+      "label": "dev:server",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L9"
+    },
+    {
+      "id": "package_scripts_build",
+      "label": "build",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L10"
+    },
+    {
+      "id": "package_scripts_start",
+      "label": "start",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L11"
+    },
+    {
+      "id": "package_scripts_test",
+      "label": "test",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L12"
+    },
+    {
+      "id": "package_scripts_test_watch",
+      "label": "test:watch",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L13"
+    },
+    {
+      "id": "package_dependencies",
+      "label": "dependencies",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L15"
+    },
+    {
+      "id": "package_dependencies_vitejs_plugin_react",
+      "label": "@vitejs/plugin-react",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L16"
+    },
+    {
+      "id": "package_dependencies_express",
+      "label": "express",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L17"
+    },
+    {
+      "id": "package_dependencies_express_session",
+      "label": "express-session",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L18"
+    },
+    {
+      "id": "package_dependencies_helmet",
+      "label": "helmet",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L19"
+    },
+    {
+      "id": "package_dependencies_lucide_react",
+      "label": "lucide-react",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L20"
+    },
+    {
+      "id": "package_dependencies_react",
+      "label": "react",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L21"
+    },
+    {
+      "id": "package_dependencies_react_dom",
+      "label": "react-dom",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L22"
+    },
+    {
+      "id": "package_dependencies_zod",
+      "label": "zod",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L23"
+    },
+    {
+      "id": "package_devdependencies",
+      "label": "devDependencies",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L25"
+    },
+    {
+      "id": "package_devdependencies_testing_library_jest_dom",
+      "label": "@testing-library/jest-dom",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L26"
+    },
+    {
+      "id": "package_devdependencies_testing_library_react",
+      "label": "@testing-library/react",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L27"
+    },
+    {
+      "id": "package_devdependencies_testing_library_user_event",
+      "label": "@testing-library/user-event",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L28"
+    },
+    {
+      "id": "package_devdependencies_types_express",
+      "label": "@types/express",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L29"
+    },
+    {
+      "id": "package_devdependencies_types_express_session",
+      "label": "@types/express-session",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L30"
+    },
+    {
+      "id": "package_devdependencies_types_node",
+      "label": "@types/node",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L31"
+    },
+    {
+      "id": "package_devdependencies_types_react",
+      "label": "@types/react",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L32"
+    },
+    {
+      "id": "package_devdependencies_types_react_dom",
+      "label": "@types/react-dom",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L33"
+    },
+    {
+      "id": "package_devdependencies_types_supertest",
+      "label": "@types/supertest",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L34"
+    },
+    {
+      "id": "package_devdependencies_concurrently",
+      "label": "concurrently",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L35"
+    },
+    {
+      "id": "package_devdependencies_jsdom",
+      "label": "jsdom",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L36"
+    },
+    {
+      "id": "package_devdependencies_supertest",
+      "label": "supertest",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L37"
+    },
+    {
+      "id": "package_devdependencies_tsx",
+      "label": "tsx",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L38"
+    },
+    {
+      "id": "package_devdependencies_typescript",
+      "label": "typescript",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L39"
+    },
+    {
+      "id": "package_devdependencies_vite",
+      "label": "vite",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L40"
+    },
+    {
+      "id": "package_devdependencies_vitest",
+      "label": "vitest",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L41"
+    },
+    {
+      "id": "client_api_taskrow",
+      "label": "TaskRow",
+      "file_type": "code",
+      "source_file": "src\\client\\api.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "client_api_containerrow",
+      "label": "ContainerRow",
+      "file_type": "code",
+      "source_file": "src\\client\\api.ts",
+      "source_location": "L8"
+    },
+    {
+      "id": "server_app_appservices",
+      "label": "AppServices",
+      "file_type": "code",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L25"
+    },
+    {
+      "id": "server_app_createapp",
+      "label": "createApp",
+      "file_type": "code",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L65"
+    },
+    {
+      "id": "server_command_commandresult",
+      "label": "CommandResult",
+      "file_type": "code",
+      "source_file": "src\\server\\command.ts",
+      "source_location": "L3"
+    },
+    {
+      "id": "server_command_commandrunner",
+      "label": "CommandRunner",
+      "file_type": "code",
+      "source_file": "src\\server\\command.ts",
+      "source_location": "L9"
+    },
+    {
+      "id": "server_command_runpowershell",
+      "label": "runPowerShell",
+      "file_type": "code",
+      "source_file": "src\\server\\command.ts",
+      "source_location": "L32"
+    },
+    {
+      "id": "server_config_appconfig",
+      "label": "AppConfig",
+      "file_type": "code",
+      "source_file": "src\\server\\config.ts",
+      "source_location": "L21"
+    },
+    {
+      "id": "server_config_normalizetaskfolder",
+      "label": "normalizeTaskFolder",
+      "file_type": "code",
+      "source_file": "src\\server\\config.ts",
+      "source_location": "L23"
+    },
+    {
+      "id": "server_config_loadconfig",
+      "label": "loadConfig",
+      "file_type": "code",
+      "source_file": "src\\server\\config.ts",
+      "source_location": "L29"
+    },
+    {
+      "id": "server_docker_dockercontainer",
+      "label": "DockerContainer",
+      "file_type": "code",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L4"
+    },
+    {
+      "id": "server_docker_parsedockerpsjsonlines",
+      "label": "parseDockerPsJsonLines",
+      "file_type": "code",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L24"
+    },
+    {
+      "id": "server_docker_listcontainers",
+      "label": "listContainers",
+      "file_type": "code",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L41"
+    },
+    {
+      "id": "server_docker_startcontainer",
+      "label": "startContainer",
+      "file_type": "code",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L56"
+    },
+    {
+      "id": "server_docker_stopcontainer",
+      "label": "stopContainer",
+      "file_type": "code",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L64"
+    },
+    {
+      "id": "server_tasks_scheduledtask",
+      "label": "ScheduledTask",
+      "file_type": "code",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L5"
+    },
+    {
+      "id": "server_tasks_parsescheduledtaskjson",
+      "label": "parseScheduledTaskJson",
+      "file_type": "code",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L35"
+    },
+    {
+      "id": "server_tasks_listtasks",
+      "label": "listTasks",
+      "file_type": "code",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L50"
+    },
+    {
+      "id": "server_tasks_runtask",
+      "label": "runTask",
+      "file_type": "code",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L93"
+    },
+    {
+      "id": "server_tasks_stoptask",
+      "label": "stopTask",
+      "file_type": "code",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L97"
+    },
+    {
+      "id": "server_tasks_disabletask",
+      "label": "disableTask",
+      "file_type": "code",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L101"
+    }
+  ],
+  "edges": [
+    {
+      "source": "src_client_api_ts",
+      "target": "client_api_taskrow",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\api.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_api_ts",
+      "target": "client_api_containerrow",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\api.ts",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_api_ts",
+      "target": "client_api_requestjson",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\api.ts",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_api_ts",
+      "target": "client_api_api",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\api.ts",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_app_test_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\App.test.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_app_test_tsx",
+      "target": "user_event",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\App.test.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_app_test_tsx",
+      "target": "vitest",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\App.test.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_app_test_tsx",
+      "target": "src_client_app_tsx",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\App.test.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_app_test_tsx",
+      "target": "client_app_test_jsonresponse",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\App.test.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_app_tsx",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_app_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_app_tsx",
+      "target": "src_client_api_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_app_tsx",
+      "target": "client_api_api",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_app_tsx",
+      "target": "client_api_containerrow",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_app_tsx",
+      "target": "client_api_taskrow",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_app_tsx",
+      "target": "client_app_page",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_app_tsx",
+      "target": "client_app_stateclass",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_app_tsx",
+      "target": "client_app_formattime",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_app_tsx",
+      "target": "client_app_navbutton",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_app_tsx",
+      "target": "client_app_login",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_app_tsx",
+      "target": "client_app_taskspage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L69",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_app_tsx",
+      "target": "client_app_dockerpage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L105",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_app_tsx",
+      "target": "client_app_app",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\App.tsx",
+      "source_location": "L140",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_main_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\main.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_main_tsx",
+      "target": "client",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\main.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_main_tsx",
+      "target": "src_client_app_tsx",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\main.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_client_main_tsx",
+      "target": "src_client_styles_css",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\client\\main.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_test_ts",
+      "target": "supertest",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.test.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_test_ts",
+      "target": "vitest",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_test_ts",
+      "target": "src_server_app_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.test.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_test_ts",
+      "target": "server_app_createapp",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.test.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_test_ts",
+      "target": "src_server_config_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.test.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_test_ts",
+      "target": "server_config_appconfig",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.test.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_test_ts",
+      "target": "server_app_test_config",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.test.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_test_ts",
+      "target": "server_app_test_makeapp",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.test.ts",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "express",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "express_session",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "helmet",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "src_server_config_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "server_config_appconfig",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "src_server_docker_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "server_docker_listcontainers",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "server_docker_startcontainer",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "server_docker_stopcontainer",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "server_docker_dockercontainer",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "src_server_tasks_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "server_tasks_disabletask",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "server_tasks_listtasks",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "server_tasks_runtask",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "server_tasks_stoptask",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "server_tasks_scheduledtask",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "server_app_sessiondata",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "server_app_appservices",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "server_app_createappoptions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "server_app_defaultservices",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "server_app_asyncroute",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L52",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "server_app_paramasstring",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L61",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_app_ts",
+      "target": "server_app_createapp",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L65",
+      "weight": 1.0
+    },
+    {
+      "source": "server_app_createapp",
+      "target": "server_app_defaultservices",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "server_app_createapp",
+      "target": "server_app_asyncroute",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L113",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_command_ts",
+      "target": "node_child_process",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\command.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_command_ts",
+      "target": "server_command_commandresult",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\command.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_command_ts",
+      "target": "server_command_commandrunner",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\command.ts",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_command_ts",
+      "target": "server_command_runcommand",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\command.ts",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_command_ts",
+      "target": "server_command_runpowershell",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\command.ts",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_config_test_ts",
+      "target": "node_fs",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\config.test.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_config_test_ts",
+      "target": "node_os",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\config.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_config_test_ts",
+      "target": "node_path",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\config.test.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_config_test_ts",
+      "target": "vitest",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\config.test.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_config_test_ts",
+      "target": "src_server_config_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\config.test.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_config_test_ts",
+      "target": "server_config_loadconfig",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\config.test.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_config_ts",
+      "target": "node_fs",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\config.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_config_ts",
+      "target": "node_path",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\config.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_config_ts",
+      "target": "zod",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\config.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_config_ts",
+      "target": "server_config_configschema",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\config.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_config_ts",
+      "target": "server_config_appconfig",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\config.ts",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_config_ts",
+      "target": "server_config_normalizetaskfolder",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\config.ts",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_config_ts",
+      "target": "server_config_loadconfig",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\config.ts",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "server_config_loadconfig",
+      "target": "server_config_normalizetaskfolder",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\config.ts",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_docker_test_ts",
+      "target": "vitest",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.test.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_docker_test_ts",
+      "target": "src_server_docker_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_docker_test_ts",
+      "target": "server_docker_listcontainers",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_docker_test_ts",
+      "target": "server_docker_parsedockerpsjsonlines",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_docker_test_ts",
+      "target": "server_docker_startcontainer",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_docker_test_ts",
+      "target": "server_docker_stopcontainer",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_docker_ts",
+      "target": "src_server_command_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_docker_ts",
+      "target": "server_command_commandrunner",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_docker_ts",
+      "target": "src_server_command_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_docker_ts",
+      "target": "server_command_runcommand",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_docker_ts",
+      "target": "server_docker_dockercontainer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_docker_ts",
+      "target": "server_docker_dockerpsline",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_docker_ts",
+      "target": "server_docker_parsedockerpsjsonlines",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_docker_ts",
+      "target": "server_docker_listcontainers",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_docker_ts",
+      "target": "server_docker_assertcontainerexists",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L49",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_docker_ts",
+      "target": "server_docker_startcontainer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L56",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_docker_ts",
+      "target": "server_docker_stopcontainer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L64",
+      "weight": 1.0
+    },
+    {
+      "source": "server_docker_listcontainers",
+      "target": "server_docker_parsedockerpsjsonlines",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L46",
+      "weight": 1.0
+    },
+    {
+      "source": "server_docker_assertcontainerexists",
+      "target": "server_docker_listcontainers",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "server_docker_startcontainer",
+      "target": "server_docker_assertcontainerexists",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L57",
+      "weight": 1.0
+    },
+    {
+      "source": "server_docker_stopcontainer",
+      "target": "server_docker_assertcontainerexists",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\docker.ts",
+      "source_location": "L65",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_index_ts",
+      "target": "src_server_app_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\index.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_index_ts",
+      "target": "server_app_createapp",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\index.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_index_ts",
+      "target": "src_server_config_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\index.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_index_ts",
+      "target": "server_config_loadconfig",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\index.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_index_ts",
+      "target": "server_index_config",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\index.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_index_ts",
+      "target": "server_index_app",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\index.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_test_ts",
+      "target": "vitest",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.test.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_test_ts",
+      "target": "src_server_tasks_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_test_ts",
+      "target": "server_tasks_disabletask",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_test_ts",
+      "target": "server_tasks_listtasks",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_test_ts",
+      "target": "server_tasks_parsescheduledtaskjson",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_test_ts",
+      "target": "server_tasks_runtask",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_test_ts",
+      "target": "server_tasks_stoptask",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_ts",
+      "target": "src_server_command_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_ts",
+      "target": "server_command_commandrunner",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_ts",
+      "target": "src_server_command_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_ts",
+      "target": "server_command_runpowershell",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_ts",
+      "target": "src_server_config_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_ts",
+      "target": "server_config_normalizetaskfolder",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_ts",
+      "target": "server_tasks_scheduledtask",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_ts",
+      "target": "server_tasks_powershelltask",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_ts",
+      "target": "server_tasks_parsepowershelldate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_ts",
+      "target": "server_tasks_escapepowershellsinglequoted",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_ts",
+      "target": "server_tasks_parsescheduledtaskjson",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_ts",
+      "target": "server_tasks_listtasks",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_ts",
+      "target": "server_tasks_asserttaskexists",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L71",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_ts",
+      "target": "server_tasks_runtaskcommand",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L78",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_ts",
+      "target": "server_tasks_runtask",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L93",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_ts",
+      "target": "server_tasks_stoptask",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L97",
+      "weight": 1.0
+    },
+    {
+      "source": "src_server_tasks_ts",
+      "target": "server_tasks_disabletask",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L101",
+      "weight": 1.0
+    },
+    {
+      "source": "server_tasks_listtasks",
+      "target": "server_tasks_escapepowershellsinglequoted",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "server_tasks_listtasks",
+      "target": "server_tasks_parsescheduledtaskjson",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L68",
+      "weight": 1.0
+    },
+    {
+      "source": "server_tasks_asserttaskexists",
+      "target": "server_tasks_listtasks",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L72",
+      "weight": 1.0
+    },
+    {
+      "source": "server_tasks_runtaskcommand",
+      "target": "server_tasks_asserttaskexists",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L84",
+      "weight": 1.0
+    },
+    {
+      "source": "server_tasks_runtaskcommand",
+      "target": "server_tasks_escapepowershellsinglequoted",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L86",
+      "weight": 1.0
+    },
+    {
+      "source": "server_tasks_runtask",
+      "target": "server_tasks_runtaskcommand",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L94",
+      "weight": 1.0
+    },
+    {
+      "source": "server_tasks_stoptask",
+      "target": "server_tasks_runtaskcommand",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L98",
+      "weight": 1.0
+    },
+    {
+      "source": "server_tasks_disabletask",
+      "target": "server_tasks_runtaskcommand",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L102",
+      "weight": 1.0
+    },
+    {
+      "source": "src_test_setup_ts",
+      "target": "vitest",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\test\\setup.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "config_app_config_json",
+      "target": "config_app_config_server",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config\\app.config.json",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "config_app_config_server",
+      "target": "config_app_config_server_host",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config\\app.config.json",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "config_app_config_server",
+      "target": "config_app_config_server_port",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config\\app.config.json",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "config_app_config_json",
+      "target": "config_app_config_auth",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config\\app.config.json",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "config_app_config_auth",
+      "target": "config_app_config_auth_password",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config\\app.config.json",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "config_app_config_json",
+      "target": "config_app_config_tasks",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config\\app.config.json",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "config_app_config_tasks",
+      "target": "config_app_config_tasks_folder",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config\\app.config.json",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "config_app_config_json",
+      "target": "config_app_config_docker",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config\\app.config.json",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "config_app_config_docker",
+      "target": "config_app_config_docker_enabled",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config\\app.config.json",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_superpowers_plans_2026_06_03_task_and_docker_md",
+      "target": "plans_2026_06_03_task_and_docker_task_and_docker_implementation_plan",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs\\superpowers\\plans\\2026-06-03-task-and-docker.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_03_task_and_docker_task_and_docker_implementation_plan",
+      "target": "plans_2026_06_03_task_and_docker_task_1_repository_and_config",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs\\superpowers\\plans\\2026-06-03-task-and-docker.md",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_03_task_and_docker_task_and_docker_implementation_plan",
+      "target": "plans_2026_06_03_task_and_docker_task_2_backend_system_wrappers",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs\\superpowers\\plans\\2026-06-03-task-and-docker.md",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_03_task_and_docker_task_and_docker_implementation_plan",
+      "target": "plans_2026_06_03_task_and_docker_task_3_backend_api_and_auth",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs\\superpowers\\plans\\2026-06-03-task-and-docker.md",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_03_task_and_docker_task_and_docker_implementation_plan",
+      "target": "plans_2026_06_03_task_and_docker_task_4_frontend_application",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs\\superpowers\\plans\\2026-06-03-task-and-docker.md",
+      "source_location": "L52",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_03_task_and_docker_task_and_docker_implementation_plan",
+      "target": "plans_2026_06_03_task_and_docker_task_5_readme_and_graphify",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs\\superpowers\\plans\\2026-06-03-task-and-docker.md",
+      "source_location": "L66",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_03_task_and_docker_task_and_docker_implementation_plan",
+      "target": "plans_2026_06_03_task_and_docker_task_6_branch_integration",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs\\superpowers\\plans\\2026-06-03-task-and-docker.md",
+      "source_location": "L76",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_superpowers_specs_2026_06_03_task_and_docker_design_md",
+      "target": "specs_2026_06_03_task_and_docker_design_task_and_docker_design",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs\\superpowers\\specs\\2026-06-03-task-and-docker-design.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_03_task_and_docker_design_task_and_docker_design",
+      "target": "specs_2026_06_03_task_and_docker_design_goal",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs\\superpowers\\specs\\2026-06-03-task-and-docker-design.md",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_03_task_and_docker_design_task_and_docker_design",
+      "target": "specs_2026_06_03_task_and_docker_design_scope",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs\\superpowers\\specs\\2026-06-03-task-and-docker-design.md",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_03_task_and_docker_design_task_and_docker_design",
+      "target": "specs_2026_06_03_task_and_docker_design_architecture",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs\\superpowers\\specs\\2026-06-03-task-and-docker-design.md",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_03_task_and_docker_design_task_and_docker_design",
+      "target": "specs_2026_06_03_task_and_docker_design_configuration",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs\\superpowers\\specs\\2026-06-03-task-and-docker-design.md",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_03_task_and_docker_design_task_and_docker_design",
+      "target": "specs_2026_06_03_task_and_docker_design_authentication",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs\\superpowers\\specs\\2026-06-03-task-and-docker-design.md",
+      "source_location": "L44",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_03_task_and_docker_design_task_and_docker_design",
+      "target": "specs_2026_06_03_task_and_docker_design_safety",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs\\superpowers\\specs\\2026-06-03-task-and-docker-design.md",
+      "source_location": "L48",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_03_task_and_docker_design_task_and_docker_design",
+      "target": "specs_2026_06_03_task_and_docker_design_ui",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs\\superpowers\\specs\\2026-06-03-task-and-docker-design.md",
+      "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_03_task_and_docker_design_task_and_docker_design",
+      "target": "specs_2026_06_03_task_and_docker_design_verification_findings",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs\\superpowers\\specs\\2026-06-03-task-and-docker-design.md",
+      "source_location": "L60",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_md",
+      "target": "readme_task_and_docker",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_task_and_docker",
+      "target": "readme_features",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_task_and_docker",
+      "target": "readme_requirements",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_task_and_docker",
+      "target": "readme_configuration",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_task_and_docker",
+      "target": "readme_development",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L51",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_task_and_docker",
+      "target": "readme_verification",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L73",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_task_and_docker",
+      "target": "readme_runtime_notes",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L87",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_task_and_docker",
+      "target": "readme_git_workflow",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L96",
+      "weight": 1.0
+    },
+    {
+      "source": "package_json",
+      "target": "package_name",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "package_json",
+      "target": "package_version",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "package_json",
+      "target": "package_private",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "package_json",
+      "target": "package_type",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "package_json",
+      "target": "package_scripts",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "package_scripts",
+      "target": "package_scripts_dev",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "package_scripts",
+      "target": "package_scripts_dev_client",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "package_scripts",
+      "target": "package_scripts_dev_server",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "package_scripts",
+      "target": "package_scripts_build",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "package_scripts",
+      "target": "package_scripts_start",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "package_scripts",
+      "target": "package_scripts_test",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "package_scripts",
+      "target": "package_scripts_test_watch",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "package_json",
+      "target": "package_dependencies",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_vitejs_plugin_react",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_vitejs_plugin_react",
+      "target": "vitejs_plugin_react",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L16",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_express",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_express",
+      "target": "express",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L17",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_express_session",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_express_session",
+      "target": "express_session",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L18",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_helmet",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_helmet",
+      "target": "helmet",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L19",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_lucide_react",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_lucide_react",
+      "target": "lucide_react",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L20",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_react",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_react",
+      "target": "react",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L21",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_react_dom",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_react_dom",
+      "target": "react_dom",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L22",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_zod",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_zod",
+      "target": "zod",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L23",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_json",
+      "target": "package_devdependencies",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_testing_library_jest_dom",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_testing_library_jest_dom",
+      "target": "testing_library_jest_dom",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L26",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_testing_library_react",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L27",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_testing_library_react",
+      "target": "testing_library_react",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L27",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_testing_library_user_event",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_testing_library_user_event",
+      "target": "testing_library_user_event",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L28",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_types_express",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_types_express",
+      "target": "types_express",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L29",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_types_express_session",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_types_express_session",
+      "target": "types_express_session",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L30",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_types_node",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_types_node",
+      "target": "types_node",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L31",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_types_react",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_types_react",
+      "target": "types_react",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L32",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_types_react_dom",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_types_react_dom",
+      "target": "types_react_dom",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L33",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_types_supertest",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_types_supertest",
+      "target": "types_supertest",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L34",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_concurrently",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_concurrently",
+      "target": "concurrently",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L35",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_jsdom",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_jsdom",
+      "target": "jsdom",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L36",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_supertest",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L37",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_supertest",
+      "target": "supertest",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L37",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_tsx",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_tsx",
+      "target": "tsx",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L38",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_typescript",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_typescript",
+      "target": "typescript",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L39",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_vite",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_vite",
+      "target": "vite",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L40",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_vitest",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_vitest",
+      "target": "vitest",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L41",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "server_app_test_makeapp",
+      "target": "server_app_createapp",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\app.test.ts",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "server_tasks_runtaskcommand",
+      "target": "server_config_normalizetaskfolder",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L85",
+      "weight": 1.0
+    },
+    {
+      "source": "server_tasks_runtaskcommand",
+      "target": "server_command_runpowershell",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\server\\tasks.ts",
+      "source_location": "L87",
+      "weight": 1.0
+    },
+    {
+      "source": "server_app_createapp",
+      "target": "package_dependencies_express",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L66",
+      "weight": 1.0
+    },
+    {
+      "source": "server_app_createapp",
+      "target": "package_dependencies_helmet",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "src\\server\\app.ts",
+      "source_location": "L69",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

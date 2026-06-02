@@ -79,11 +79,13 @@ function TasksPage({ items, onRefresh, onAction, busyAction }: { items: TaskRow[
         </button>
       </div>
       <div className="resource-list task-grid">
-        <div className="resource-head">Name</div>
-        <div className="resource-head">State</div>
-        <div className="resource-head">Last run time</div>
-        <div className="resource-head">Last result</div>
-        <div className="resource-head">Actions</div>
+        <div className="resource-row resource-head">
+          <span>Name</span>
+          <span>State</span>
+          <span>Last run time</span>
+          <span>Last result</span>
+          <span>Actions</span>
+        </div>
         {items.map((task) => (
           <article className="resource-row" key={task.name}>
             <strong>{task.name}</strong>
@@ -115,11 +117,13 @@ function DockerPage({ items, onRefresh, onAction, busyAction }: { items: Contain
         </button>
       </div>
       <div className="resource-list docker-grid">
-        <div className="resource-head">Name</div>
-        <div className="resource-head">Image</div>
-        <div className="resource-head">Port</div>
-        <div className="resource-head">Last started</div>
-        <div className="resource-head">Actions</div>
+        <div className="resource-row resource-head">
+          <span>Name</span>
+          <span>Image</span>
+          <span>Port</span>
+          <span>Last started</span>
+          <span>Actions</span>
+        </div>
         {items.map((container) => (
           <article className="resource-row" key={container.id}>
             <strong>{container.name}</strong>

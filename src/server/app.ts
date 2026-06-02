@@ -35,6 +35,7 @@ export type AppServices = {
 type CreateAppOptions = {
   config: AppConfig;
   services?: Partial<AppServices>;
+  staticDir?: string;
 };
 
 function defaultServices(): AppServices {
@@ -62,7 +63,7 @@ function paramAsString(value: string | string[]): string {
   return Array.isArray(value) ? value[0] : value;
 }
 
-export function createApp({ config, services: serviceOverrides = {} }: CreateAppOptions) {
+export function createApp({ config, services: serviceOverrides = {}, staticDir }: CreateAppOptions) {
   const app = express();
   const services: AppServices = { ...defaultServices(), ...serviceOverrides };
 
@@ -161,6 +162,13 @@ export function createApp({ config, services: serviceOverrides = {} }: CreateApp
       res.json({ ok: true });
     })
   );
+
+  if (staticDir) {
+    app.use(express.static(staticDir));
+    app.use((_req, res) => {
+      res.sendFile("index.html", { root: staticDir });
+    });
+  }
 
   return { app, services };
 }
