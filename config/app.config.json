@@ -1,0 +1,15 @@
+{
+  "server": {
+    "host": "::",
+    "port": 3000
+  },
+  "auth": {
+    "password": "change-me-now"
+  },
+  "tasks": {
+    "folder": "\\Auto-Start-A"
+  },
+  "docker": {
+    "enabled": true
+  }
+}
