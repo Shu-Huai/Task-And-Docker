@@ -44,5 +44,7 @@ export const api = {
   disableTask: (name: string) => requestJson("/api/tasks/" + encodeURIComponent(name) + "/disable", { method: "POST" }),
   containers: () => requestJson<{ items: ContainerRow[] }>("/api/docker/containers"),
   startContainer: (id: string) => requestJson("/api/docker/containers/" + encodeURIComponent(id) + "/start", { method: "POST" }),
-  stopContainer: (id: string) => requestJson("/api/docker/containers/" + encodeURIComponent(id) + "/stop", { method: "POST" })
+  stopContainer: (id: string) => requestJson("/api/docker/containers/" + encodeURIComponent(id) + "/stop", { method: "POST" }),
+  startComposeProject: (project: string) => requestJson("/api/docker/projects/" + encodeURIComponent(project) + "/start", { method: "POST" }),
+  stopComposeProject: (project: string) => requestJson("/api/docker/projects/" + encodeURIComponent(project) + "/stop", { method: "POST" })
 };
