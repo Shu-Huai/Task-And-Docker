@@ -98,7 +98,15 @@ button:focus-visible {
   gap: 8px;
   justify-content: center;
   min-height: 44px;
-  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+  transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.primary-button:hover,
+.ghost-button:hover,
+.icon-button:hover,
+.actions button:hover,
+.nav-item:hover {
+  transform: translateY(-1px);
 }
 
 .primary-button {
@@ -159,6 +167,7 @@ button:focus-visible {
 
 .nav-item.active {
   background: #e9f2ff;
+  box-shadow: inset 3px 0 0 #0f6fde;
   color: #0f5fbe;
   font-weight: 700;
 }
@@ -186,6 +195,7 @@ button:focus-visible {
 }
 
 .page-section {
+  animation: page-enter 260ms ease both;
   display: grid;
   gap: 20px;
 }
@@ -216,6 +226,12 @@ button:focus-visible {
   grid-template-columns: minmax(120px, 1fr) minmax(160px, 1.2fr) minmax(140px, 1.1fr) 110px 110px 104px;
 }
 
+.docker-grid .compose-row {
+  background: #f8fbff;
+  border-top-color: #cbd8ea;
+  grid-template-columns: 44px minmax(120px, 1fr) minmax(160px, 1.2fr) minmax(140px, 1.1fr) 110px 110px 104px;
+}
+
 .resource-head {
   background: #f0f4fa;
   color: #667085;
@@ -225,11 +241,60 @@ button:focus-visible {
 
 .resource-row {
   border-top: 1px solid #e8eef6;
+  animation: row-enter 220ms ease both;
+  transition: background 160ms ease, box-shadow 160ms ease;
 }
 
 .resource-row span,
 .resource-row strong {
   overflow-wrap: anywhere;
+}
+
+.resource-row:hover {
+  background: #fbfdff;
+}
+
+.container-group {
+  display: contents;
+}
+
+.container-child strong {
+  padding-left: 22px;
+  position: relative;
+}
+
+.container-child strong::before {
+  background: #b8c7da;
+  border-radius: 999px;
+  content: "";
+  height: 6px;
+  left: 4px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+}
+
+.group-toggle {
+  align-items: center;
+  background: #e7f0ff;
+  border: 1px solid #bfd6ff;
+  border-radius: 8px;
+  color: #0f5fbe;
+  display: inline-flex;
+  height: 34px;
+  justify-content: center;
+  transition: background 160ms ease, transform 160ms ease;
+  width: 34px;
+}
+
+.group-toggle:hover {
+  background: #d9eaff;
+  transform: translateY(-1px);
+}
+
+.muted {
+  color: #667085;
 }
 
 .actions {
@@ -275,6 +340,102 @@ button:focus-visible {
   padding: 12px 14px;
 }
 
+.dialog-backdrop {
+  align-items: center;
+  animation: backdrop-enter 180ms ease both;
+  background: rgba(15, 23, 42, 0.42);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 24px;
+  position: fixed;
+  z-index: 10;
+}
+
+.confirm-dialog {
+  animation: dialog-enter 220ms ease both;
+  background: #ffffff;
+  border: 1px solid #dbe3ef;
+  border-radius: 8px;
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.22);
+  display: grid;
+  gap: 16px;
+  max-width: 440px;
+  padding: 24px;
+  width: min(100%, 440px);
+}
+
+.confirm-dialog h2 {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.confirm-dialog p {
+  color: #4a5a70;
+  margin-bottom: 0;
+}
+
+.dialog-icon {
+  align-items: center;
+  background: #fff1e6;
+  border: 1px solid #ffd2ad;
+  border-radius: 8px;
+  color: #c2410c;
+  display: inline-flex;
+  height: 44px;
+  justify-content: center;
+  width: 44px;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.danger-button {
+  background: #c2410c;
+  padding: 0 16px;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes row-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes backdrop-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes dialog-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .bottom-nav {
   display: none;
 }
@@ -308,6 +469,14 @@ button:focus-visible {
     padding: 16px;
   }
 
+  .docker-grid .compose-row {
+    grid-template-columns: 44px 1fr;
+  }
+
+  .docker-grid .compose-row span:nth-of-type(n + 2) {
+    grid-column: 2;
+  }
+
   .actions {
     flex-wrap: wrap;
   }
@@ -327,5 +496,15 @@ button:focus-visible {
 
   .bottom-nav .nav-item {
     justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
   }
 }

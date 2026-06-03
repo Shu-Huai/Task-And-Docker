@@ -11,7 +11,8 @@ describe("容器输出解析", () => {
         Ports: "0.0.0.0:15472->3000/tcp, [::]:15472->3000/tcp",
         RunningFor: "5 weeks ago",
         State: "running",
-        Status: "Up 34 hours"
+        Status: "Up 34 hours",
+        Labels: "com.docker.compose.project=searxng,com.docker.compose.service=core"
       }),
       JSON.stringify({
         ID: "e88b59aecb25",
@@ -20,7 +21,8 @@ describe("容器输出解析", () => {
         Ports: "",
         RunningFor: "2 months ago",
         State: "exited",
-        Status: "Exited (0) 20 days ago"
+        Status: "Exited (0) 20 days ago",
+        Labels: ""
       })
     ].join("\n");
 
@@ -32,7 +34,9 @@ describe("容器输出解析", () => {
         ports: "0.0.0.0:15472->3000/tcp, [::]:15472->3000/tcp",
         lastStarted: "5 weeks ago",
         state: "running",
-        status: "Up 34 hours"
+        status: "Up 34 hours",
+        composeProject: "searxng",
+        composeService: "core"
       },
       {
         id: "e88b59aecb25",
@@ -41,7 +45,9 @@ describe("容器输出解析", () => {
         ports: "",
         lastStarted: "2 months ago",
         state: "exited",
-        status: "Exited (0) 20 days ago"
+        status: "Exited (0) 20 days ago",
+        composeProject: null,
+        composeService: null
       }
     ]);
   });
