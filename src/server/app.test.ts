@@ -21,9 +21,11 @@ function makeApp() {
       runTask: vi.fn().mockResolvedValue(undefined),
       stopTask: vi.fn().mockResolvedValue(undefined),
       disableTask: vi.fn().mockResolvedValue(undefined),
-      listContainers: vi.fn().mockResolvedValue([{ id: "abc123", name: "db", image: "postgres", ports: "5432/tcp", lastStarted: "1 day ago", state: "running", status: "Up 1 day" }]),
+      listContainers: vi.fn().mockResolvedValue([{ id: "abc123", name: "db", image: "postgres", ports: "5432/tcp", lastStarted: "1 day ago", state: "running", status: "Up 1 day", composeProject: "searxng", composeService: "db" }]),
       startContainer: vi.fn().mockResolvedValue(undefined),
-      stopContainer: vi.fn().mockResolvedValue(undefined)
+      stopContainer: vi.fn().mockResolvedValue(undefined),
+      startComposeProject: vi.fn().mockResolvedValue(undefined),
+      stopComposeProject: vi.fn().mockResolvedValue(undefined)
     }
   });
 }
@@ -95,6 +97,18 @@ describe("应用服务", () => {
     expect(list.body.items[0].id).toBe("abc123");
     expect(services.startContainer).toHaveBeenCalledWith("abc123");
     expect(services.stopContainer).toHaveBeenCalledWith("abc123");
+  });
+
+  it("按 Compose 项目控制 Docker 容器", async () => {
+    const { app, services } = makeApp();
+    const agent = request.agent(app);
+    await agent.post("/api/auth/login").send({ password: "secret" });
+
+    await agent.post("/api/docker/projects/searxng/start");
+    await agent.post("/api/docker/projects/searxng/stop");
+
+    expect(services.startComposeProject).toHaveBeenCalledWith("searxng");
+    expect(services.stopComposeProject).toHaveBeenCalledWith("searxng");
   });
 
   it("退出登录", async () => {

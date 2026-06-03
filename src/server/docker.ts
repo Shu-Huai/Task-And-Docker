@@ -71,6 +71,19 @@ async function assertContainerExists(id: string, runner: CommandRunner): Promise
   }
 }
 
+async function listComposeProjectContainers(project: string, runner: CommandRunner): Promise<DockerContainer[]> {
+  const containers = await listContainers(runner);
+  const projectContainers = containers.filter((container) => container.composeProject === project);
+  if (projectContainers.length === 0) {
+    throw new Error("未找到 Compose 项目");
+  }
+  return projectContainers;
+}
+
+function isRunning(container: DockerContainer): boolean {
+  return container.state.toLowerCase().includes("run");
+}
+
 export async function startContainer(id: string, runner: CommandRunner = runCommand): Promise<void> {
   await assertContainerExists(id, runner);
   const result = await runner("docker", ["start", id]);
@@ -84,5 +97,25 @@ export async function stopContainer(id: string, runner: CommandRunner = runComma
   const result = await runner("docker", ["stop", id]);
   if (result.exitCode !== 0) {
     throw new Error(result.stderr || "无法停止容器");
+  }
+}
+
+export async function startComposeProject(project: string, runner: CommandRunner = runCommand): Promise<void> {
+  const containers = await listComposeProjectContainers(project, runner);
+  const ids = containers.filter((container) => !isRunning(container)).map((container) => container.id);
+  if (ids.length === 0) return;
+  const result = await runner("docker", ["start", ...ids]);
+  if (result.exitCode !== 0) {
+    throw new Error(result.stderr || "无法启动 Compose 项目");
+  }
+}
+
+export async function stopComposeProject(project: string, runner: CommandRunner = runCommand): Promise<void> {
+  const containers = await listComposeProjectContainers(project, runner);
+  const ids = containers.filter(isRunning).map((container) => container.id);
+  if (ids.length === 0) return;
+  const result = await runner("docker", ["stop", ...ids]);
+  if (result.exitCode !== 0) {
+    throw new Error(result.stderr || "无法停止 Compose 项目");
   }
 }

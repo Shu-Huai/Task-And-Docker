@@ -4,7 +4,9 @@ import helmet from "helmet";
 import type { AppConfig } from "./config";
 import {
   listContainers,
+  startComposeProject,
   startContainer,
+  stopComposeProject,
   stopContainer,
   type DockerContainer
 } from "./docker";
@@ -30,6 +32,8 @@ export type AppServices = {
   listContainers: () => Promise<DockerContainer[]>;
   startContainer: (id: string) => Promise<void>;
   stopContainer: (id: string) => Promise<void>;
+  startComposeProject: (project: string) => Promise<void>;
+  stopComposeProject: (project: string) => Promise<void>;
 };
 
 type CreateAppOptions = {
@@ -46,7 +50,9 @@ function defaultServices(): AppServices {
     disableTask,
     listContainers,
     startContainer,
-    stopContainer
+    stopContainer,
+    startComposeProject,
+    stopComposeProject
   };
 }
 
@@ -159,6 +165,22 @@ export function createApp({ config, services: serviceOverrides = {}, staticDir }
     "/api/docker/containers/:id/stop",
     asyncRoute(async (req, res) => {
       await services.stopContainer(paramAsString(req.params.id));
+      res.json({ ok: true });
+    })
+  );
+
+  app.post(
+    "/api/docker/projects/:project/start",
+    asyncRoute(async (req, res) => {
+      await services.startComposeProject(paramAsString(req.params.project));
+      res.json({ ok: true });
+    })
+  );
+
+  app.post(
+    "/api/docker/projects/:project/stop",
+    asyncRoute(async (req, res) => {
+      await services.stopComposeProject(paramAsString(req.params.project));
       res.json({ ok: true });
     })
   );

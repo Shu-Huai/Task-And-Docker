@@ -112,11 +112,45 @@ describe("前端应用", () => {
     expect(await screen.findByText("searxng")).toBeInTheDocument();
     expect(screen.getByText("2 个容器")).toBeInTheDocument();
     expect(screen.getByText("searxng/searxng:latest")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "启动项目 searxng" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "停止项目 searxng" })).toBeInTheDocument();
 
     await userEvent.click(screen.getByRole("button", { name: "折叠项目 searxng" }));
 
     expect(screen.queryByText("searxng/searxng:latest")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "展开项目 searxng" })).toBeInTheDocument();
+  });
+
+  it("可以从 Compose 项目行启动和停止整组容器", async () => {
+    const fetchMock = vi.fn((input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.endsWith("/api/me")) return jsonResponse({ authenticated: true });
+      if (url.endsWith("/api/tasks")) return jsonResponse({ items: [] });
+      if (url.endsWith("/api/docker/containers")) {
+        return jsonResponse({
+          items: [
+            { id: "core123", name: "core", image: "searxng/searxng:latest", ports: "2345:8080", lastStarted: "1 day ago", state: "exited", status: "Exited", composeProject: "searxng", composeService: "core" }
+          ]
+        });
+      }
+      if (url.endsWith("/api/docker/projects/searxng/start")) return jsonResponse({ ok: true });
+      if (url.endsWith("/api/docker/projects/searxng/stop")) return jsonResponse({ ok: true });
+      return jsonResponse({});
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    render(<App />);
+
+    const dockerButtons = await screen.findAllByRole("button", { name: "Docker" });
+    await userEvent.click(dockerButtons[0]);
+
+    await userEvent.click(await screen.findByRole("button", { name: "启动项目 searxng" }));
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining("/api/docker/projects/searxng/start"), expect.anything()));
+
+    await userEvent.click(screen.getByRole("button", { name: "停止项目 searxng" }));
+    expect(await screen.findByRole("dialog", { name: "确认停止项目" })).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "确认停止" }));
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining("/api/docker/projects/searxng/stop"), expect.anything()));
   });
 
   it("危险操作使用自定义确认框", async () => {
