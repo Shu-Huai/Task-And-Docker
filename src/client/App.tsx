@@ -156,7 +156,19 @@ function ContainerResourceRow({ container, onAction, busyAction, nested = false 
   );
 }
 
-function DockerPage({ items, onRefresh, onAction, busyAction }: { items: ContainerRow[]; onRefresh: () => void; onAction: (id: string, name: string, action: "start" | "stop") => void; busyAction: string }) {
+function DockerPage({
+  items,
+  onRefresh,
+  onAction,
+  onProjectAction,
+  busyAction
+}: {
+  items: ContainerRow[];
+  onRefresh: () => void;
+  onAction: (id: string, name: string, action: "start" | "stop") => void;
+  onProjectAction: (project: string, action: "start" | "stop") => void;
+  busyAction: string;
+}) {
   const groups = useMemo(() => groupContainers(items), [items]);
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
 
@@ -202,7 +214,10 @@ function DockerPage({ items, onRefresh, onAction, busyAction }: { items: Contain
                 <span>-</span>
                 <span className={stateClass(state)}>{state === "partial" ? "部分运行" : state}</span>
                 <span>-</span>
-                <span>-</span>
+                <div className="actions">
+                  <button aria-label={`启动项目 ${group.project}`} disabled={busyAction === `project:${group.project}:start`} onClick={() => onProjectAction(group.project!, "start")}><Play size={16} /></button>
+                  <button aria-label={`停止项目 ${group.project}`} disabled={busyAction === `project:${group.project}:stop`} onClick={() => onProjectAction(group.project!, "stop")}><Square size={16} /></button>
+                </div>
               </article>
               {!isCollapsed && group.containers.map((container) => (
                 <ContainerResourceRow key={container.id} container={container} onAction={onAction} busyAction={busyAction} nested />
@@ -342,6 +357,35 @@ export default function App() {
     await executeContainerAction(id, name, action);
   }
 
+  async function executeProjectAction(project: string, action: "start" | "stop") {
+    setBusyAction(`project:${project}:${action}`);
+    try {
+      if (action === "start") await api.startComposeProject(project);
+      if (action === "stop") await api.stopComposeProject(project);
+      await refreshContainers();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "项目操作失败");
+    } finally {
+      setBusyAction("");
+    }
+  }
+
+  async function projectAction(project: string, action: "start" | "stop") {
+    if (action === "stop") {
+      setConfirmState({
+        title: "确认停止项目",
+        message: `即将停止 Compose 项目 ${project} 中正在运行的容器，正在处理的连接可能会中断。`,
+        confirmLabel: "确认停止",
+        onConfirm: async () => {
+          setConfirmState(null);
+          await executeProjectAction(project, action);
+        }
+      });
+      return;
+    }
+    await executeProjectAction(project, action);
+  }
+
   if (authenticated === null) return <main className="loading">正在加载</main>;
   if (!authenticated) return <Login onLogin={afterLogin} />;
 
@@ -366,7 +410,7 @@ export default function App() {
         {page === "tasks" ? (
           <TasksPage items={tasks} onRefresh={refreshTasks} onAction={taskAction} busyAction={busyAction} />
         ) : (
-          <DockerPage items={containers} onRefresh={refreshContainers} onAction={containerAction} busyAction={busyAction} />
+          <DockerPage items={containers} onRefresh={refreshContainers} onAction={containerAction} onProjectAction={projectAction} busyAction={busyAction} />
         )}
       </main>
       <nav className="bottom-nav">
