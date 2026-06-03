@@ -69,7 +69,7 @@ describe("前端应用", () => {
         if (url.endsWith("/api/tasks")) return jsonResponse({ items: [] });
         if (url.endsWith("/api/docker/containers")) {
           return jsonResponse({
-            items: [{ id: "abc123", name: "db", image: "postgres", ports: "5432/tcp", lastStarted: "1 day ago", state: "exited", status: "Exited" }]
+            items: [{ id: "abc123", name: "db", image: "postgres", ports: "5432/tcp", lastStarted: "1 day ago", state: "exited", status: "Exited", composeProject: null, composeService: null }]
           });
         }
         return jsonResponse({});
@@ -86,9 +86,40 @@ describe("前端应用", () => {
     expect(screen.getByRole("button", { name: "停止容器 db" })).toBeInTheDocument();
   });
 
-  it("危险操作需要确认", async () => {
-    const confirm = vi.fn(() => false);
-    vi.stubGlobal("confirm", confirm);
+  it("按 Docker Compose 项目分组并支持折叠", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((input: RequestInfo | URL) => {
+        const url = String(input);
+        if (url.endsWith("/api/me")) return jsonResponse({ authenticated: true });
+        if (url.endsWith("/api/tasks")) return jsonResponse({ items: [] });
+        if (url.endsWith("/api/docker/containers")) {
+          return jsonResponse({
+            items: [
+              { id: "core123", name: "core", image: "searxng/searxng:latest", ports: "2345:8080", lastStarted: "1 day ago", state: "running", status: "Up 1 day", composeProject: "searxng", composeService: "core" },
+              { id: "redis123", name: "valkey", image: "valkey/valkey:9-alpine", ports: "", lastStarted: "1 day ago", state: "running", status: "Up 1 day", composeProject: "searxng", composeService: "valkey" }
+            ]
+          });
+        }
+        return jsonResponse({});
+      })
+    );
+    render(<App />);
+
+    const dockerButtons = await screen.findAllByRole("button", { name: "Docker" });
+    await userEvent.click(dockerButtons[0]);
+
+    expect(await screen.findByText("searxng")).toBeInTheDocument();
+    expect(screen.getByText("2 个容器")).toBeInTheDocument();
+    expect(screen.getByText("searxng/searxng:latest")).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole("button", { name: "折叠项目 searxng" }));
+
+    expect(screen.queryByText("searxng/searxng:latest")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "展开项目 searxng" })).toBeInTheDocument();
+  });
+
+  it("危险操作使用自定义确认框", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn((input: RequestInfo | URL) => {
@@ -105,6 +136,9 @@ describe("前端应用", () => {
 
     await userEvent.click(await screen.findByRole("button", { name: "结束任务 Acme" }));
 
-    await waitFor(() => expect(confirm).toHaveBeenCalled());
+    expect(await screen.findByRole("dialog", { name: "确认结束任务" })).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "取消" }));
+
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "确认结束任务" })).not.toBeInTheDocument());
   });
 });
