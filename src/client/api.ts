@@ -13,6 +13,8 @@ export type ContainerRow = {
   lastStarted: string;
   state: string;
   status: string;
+  composeProject: string | null;
+  composeService: string | null;
 };
 
 async function requestJson<T>(url: string, options?: RequestInit): Promise<T> {

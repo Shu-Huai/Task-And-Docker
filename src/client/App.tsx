@@ -1,8 +1,19 @@
-import { Boxes, CalendarClock, LogOut, Play, RefreshCw, ShieldOff, Square } from "lucide-react";
+import { AlertTriangle, Boxes, CalendarClock, ChevronDown, ChevronRight, LogOut, Play, RefreshCw, ShieldOff, Square } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { api, type ContainerRow, type TaskRow } from "./api";
 
 type Page = "tasks" | "docker";
+type ConfirmState = {
+  title: string;
+  message: string;
+  confirmLabel: string;
+  onConfirm: () => Promise<void>;
+};
+type DockerDisplayGroup = {
+  key: string;
+  project: string | null;
+  containers: ContainerRow[];
+};
 
 function stateClass(state: string) {
   const normalized = state.toLowerCase();
@@ -104,7 +115,51 @@ function TasksPage({ items, onRefresh, onAction, busyAction }: { items: TaskRow[
   );
 }
 
+function groupContainers(items: ContainerRow[]): DockerDisplayGroup[] {
+  const groups = new Map<string, ContainerRow[]>();
+  const result: DockerDisplayGroup[] = [];
+  for (const container of items) {
+    if (!container.composeProject) {
+      result.push({ key: "container:" + container.id, project: null, containers: [container] });
+      continue;
+    }
+    const key = "project:" + container.composeProject;
+    if (!groups.has(key)) {
+      groups.set(key, []);
+      result.push({ key, project: container.composeProject, containers: groups.get(key)! });
+    }
+    groups.get(key)!.push(container);
+  }
+  return result;
+}
+
+function projectState(containers: ContainerRow[]) {
+  const running = containers.filter((container) => stateClass(container.state).includes("running")).length;
+  if (running === containers.length && containers.length > 0) return "running";
+  if (running > 0) return "partial";
+  return "exited";
+}
+
+function ContainerResourceRow({ container, onAction, busyAction, nested = false }: { container: ContainerRow; onAction: (id: string, name: string, action: "start" | "stop") => void; busyAction: string; nested?: boolean }) {
+  return (
+    <article className={nested ? "resource-row container-child" : "resource-row"} key={container.id}>
+      <strong>{nested ? (container.composeService || container.name) : container.name}</strong>
+      <span>{container.image}</span>
+      <span>{container.ports || "-"}</span>
+      <span className={stateClass(container.state)}>{container.state || container.status || "-"}</span>
+      <span>{container.lastStarted}</span>
+      <div className="actions">
+        <button aria-label={`启动容器 ${container.name}`} disabled={busyAction === container.id + ":start"} onClick={() => onAction(container.id, container.name, "start")}><Play size={16} /></button>
+        <button aria-label={`停止容器 ${container.name}`} disabled={busyAction === container.id + ":stop"} onClick={() => onAction(container.id, container.name, "stop")}><Square size={16} /></button>
+      </div>
+    </article>
+  );
+}
+
 function DockerPage({ items, onRefresh, onAction, busyAction }: { items: ContainerRow[]; onRefresh: () => void; onAction: (id: string, name: string, action: "start" | "stop") => void; busyAction: string }) {
+  const groups = useMemo(() => groupContainers(items), [items]);
+  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
+
   return (
     <section className="page-section">
       <div className="section-toolbar">
@@ -125,21 +180,56 @@ function DockerPage({ items, onRefresh, onAction, busyAction }: { items: Contain
           <span>上次启动</span>
           <span>操作</span>
         </div>
-        {items.map((container) => (
-          <article className="resource-row" key={container.id}>
-            <strong>{container.name}</strong>
-            <span>{container.image}</span>
-            <span>{container.ports || "-"}</span>
-            <span className={stateClass(container.state)}>{container.state || container.status || "-"}</span>
-            <span>{container.lastStarted}</span>
-            <div className="actions">
-              <button aria-label={`启动容器 ${container.name}`} disabled={busyAction === container.id + ":start"} onClick={() => onAction(container.id, container.name, "start")}><Play size={16} /></button>
-              <button aria-label={`停止容器 ${container.name}`} disabled={busyAction === container.id + ":stop"} onClick={() => onAction(container.id, container.name, "stop")}><Square size={16} /></button>
+        {groups.map((group) => {
+          if (!group.project) {
+            return <ContainerResourceRow key={group.key} container={group.containers[0]} onAction={onAction} busyAction={busyAction} />;
+          }
+          const isCollapsed = collapsed[group.key] ?? false;
+          const state = projectState(group.containers);
+          return (
+            <div className="container-group" key={group.key}>
+              <article className="resource-row compose-row">
+                <button
+                  className="group-toggle"
+                  aria-label={`${isCollapsed ? "展开" : "折叠"}项目 ${group.project}`}
+                  aria-expanded={!isCollapsed}
+                  onClick={() => setCollapsed((current) => ({ ...current, [group.key]: !isCollapsed }))}
+                >
+                  {isCollapsed ? <ChevronRight size={16} /> : <ChevronDown size={16} />}
+                </button>
+                <strong>{group.project}</strong>
+                <span className="muted">{group.containers.length} 个子容器</span>
+                <span>-</span>
+                <span className={stateClass(state)}>{state === "partial" ? "部分运行" : state}</span>
+                <span>-</span>
+                <span>-</span>
+              </article>
+              {!isCollapsed && group.containers.map((container) => (
+                <ContainerResourceRow key={container.id} container={container} onAction={onAction} busyAction={busyAction} nested />
+              ))}
             </div>
-          </article>
-        ))}
+          );
+        })}
       </div>
     </section>
+  );
+}
+
+function ConfirmDialog({ state, onCancel }: { state: ConfirmState; onCancel: () => void }) {
+  return (
+    <div className="dialog-backdrop" role="presentation">
+      <section className="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+        <div className="dialog-icon"><AlertTriangle size={20} /></div>
+        <div>
+          <h2 id="confirm-title">{state.title}</h2>
+          <p>{state.message}</p>
+        </div>
+        <div className="dialog-actions">
+          <button className="ghost-button" onClick={onCancel}>取消</button>
+          <button className="primary-button danger-button" onClick={state.onConfirm}>{state.confirmLabel}</button>
+        </div>
+      </section>
+    </div>
   );
 }
 
@@ -150,6 +240,7 @@ export default function App() {
   const [containers, setContainers] = useState<ContainerRow[]>([]);
   const [error, setError] = useState("");
   const [busyAction, setBusyAction] = useState("");
+  const [confirmState, setConfirmState] = useState<ConfirmState | null>(null);
 
   const title = useMemo(() => (page === "tasks" ? "任务计划程序" : "Docker"), [page]);
 
@@ -191,8 +282,7 @@ export default function App() {
     setAuthenticated(false);
   }
 
-  async function taskAction(name: string, action: "run" | "stop" | "disable") {
-    if ((action === "stop" || action === "disable") && !window.confirm(`确认${action === "stop" ? "结束" : "禁用"}任务 ${name}？`)) return;
+  async function executeTaskAction(name: string, action: "run" | "stop" | "disable") {
     setBusyAction(name + ":" + action);
     try {
       if (action === "run") await api.runTask(name);
@@ -206,8 +296,24 @@ export default function App() {
     }
   }
 
-  async function containerAction(id: string, name: string, action: "start" | "stop") {
-    if (action === "stop" && !window.confirm(`确认停止容器 ${name}？`)) return;
+  async function taskAction(name: string, action: "run" | "stop" | "disable") {
+    if (action === "stop" || action === "disable") {
+      const label = action === "stop" ? "结束" : "禁用";
+      setConfirmState({
+        title: `确认${label}任务`,
+        message: `即将${label}任务 ${name}，请确认这是你想执行的操作。`,
+        confirmLabel: `确认${label}`,
+        onConfirm: async () => {
+          setConfirmState(null);
+          await executeTaskAction(name, action);
+        }
+      });
+      return;
+    }
+    await executeTaskAction(name, action);
+  }
+
+  async function executeContainerAction(id: string, name: string, action: "start" | "stop") {
     setBusyAction(id + ":" + action);
     try {
       if (action === "start") await api.startContainer(id);
@@ -218,6 +324,22 @@ export default function App() {
     } finally {
       setBusyAction("");
     }
+  }
+
+  async function containerAction(id: string, name: string, action: "start" | "stop") {
+    if (action === "stop") {
+      setConfirmState({
+        title: "确认停止容器",
+        message: `即将停止容器 ${name}，正在处理的连接可能会中断。`,
+        confirmLabel: "确认停止",
+        onConfirm: async () => {
+          setConfirmState(null);
+          await executeContainerAction(id, name, action);
+        }
+      });
+      return;
+    }
+    await executeContainerAction(id, name, action);
   }
 
   if (authenticated === null) return <main className="loading">正在加载</main>;
@@ -251,6 +373,7 @@ export default function App() {
         <NavButton page="tasks" active={page} icon={<CalendarClock size={20} />} label="任务计划程序" onClick={setPage} />
         <NavButton page="docker" active={page} icon={<Boxes size={20} />} label="Docker" onClick={setPage} />
       </nav>
+      {confirmState && <ConfirmDialog state={confirmState} onCancel={() => setConfirmState(null)} />}
     </div>
   );
 }
