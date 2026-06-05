@@ -83,7 +83,8 @@ describe("硬件资源快照", () => {
 
     await collectHardwareSnapshot(run);
 
-    expect(run).toHaveBeenCalledWith("powershell.exe", expect.arrayContaining(["-EncodedCommand"]));
+    expect(run.mock.calls[0][0]).toBe("powershell.exe");
+    expect(run.mock.calls[0][1]).toContain("-ExecutionPolicy");
   });
 
   it("过滤虚拟显卡并保留真实显卡", () => {
@@ -121,6 +122,21 @@ describe("硬件资源快照", () => {
 
     expect(snapshot.cpu.temperatureCelsius).toBe(71);
     expect(snapshot.cpu.powerWatts).toBe(96);
+  });
+
+  it("补充 CPU 功耗时排除 GPU Package 传感器", () => {
+    const snapshot = normalizeHardwareSnapshot(({
+      ...sample,
+      cpu: { ...sample.cpu, temperatureCelsius: null, powerWatts: null },
+      sensorReadings: [
+        { hardwareName: "NVIDIA GeForce RTX", name: "GPU Package", type: "Power", value: 240 },
+        { hardwareName: "13th Gen Intel Core", name: "CPU Package", type: "Power", value: 82 },
+        { hardwareName: "13th Gen Intel Core", name: "Core Max", type: "Temperature", value: 73 }
+      ]
+    } as unknown) as HardwareSnapshot);
+
+    expect(snapshot.cpu.powerWatts).toBe(82);
+    expect(snapshot.cpu.temperatureCelsius).toBe(73);
   });
 
   it("从 GPU 计数器补充核显占用和显存", () => {

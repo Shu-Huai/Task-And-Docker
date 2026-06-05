@@ -61,6 +61,8 @@ export type HardwareSnapshot = {
 };
 
 const HARDWARE_SCRIPT = String.raw`
+$allowElevatedSensorStart = __ALLOW_ELEVATED_SENSOR_START__
+
 function NumberOrNull($value) {
   if ($null -eq $value) { return $null }
   try { return [double]$value } catch { return $null }
@@ -114,15 +116,98 @@ function FindBundledLibreHardwareMonitor {
   return $null
 }
 
+function SensorNamespaceHasRows {
+  foreach ($namespace in @("root\LibreHardwareMonitor", "root\OpenHardwareMonitor")) {
+    try {
+      $rows = @(Get-CimInstance -Namespace $namespace -ClassName Sensor -ErrorAction Stop | Select-Object -First 1)
+      if ($rows.Count -gt 0) { return $true }
+    } catch {}
+  }
+  return $false
+}
+
 function StartSensorProviderIfPresent {
   $process = Get-Process -Name LibreHardwareMonitor -ErrorAction SilentlyContinue | Select-Object -First 1
-  if ($null -ne $process) { return }
   $exe = FindBundledLibreHardwareMonitor
   if ($null -eq $exe) { return }
+  if ($null -eq $process) {
+    try {
+      Start-Process -FilePath $exe -WindowStyle Hidden | Out-Null
+      Start-Sleep -Seconds 4
+    } catch {}
+  }
+}
+
+function ParseSensorJson($json) {
+  if ([string]::IsNullOrWhiteSpace($json)) { return @() }
+  $text = @($json) -join [Environment]::NewLine
   try {
-    Start-Process -FilePath $exe -WindowStyle Hidden | Out-Null
-    Start-Sleep -Seconds 4
+    return @(ConvertFrom-Json -InputObject $text -ErrorAction Stop)
   } catch {}
+  return @()
+}
+
+function FindSensorShell {
+  $pwsh = Get-Command pwsh.exe -ErrorAction SilentlyContinue | Select-Object -First 1
+  if ($null -ne $pwsh -and -not [string]::IsNullOrWhiteSpace($pwsh.Source)) { return $pwsh.Source }
+  return "powershell.exe"
+}
+
+function FlattenSensorRows($rows) {
+  foreach ($row in @($rows)) {
+    if ($row -is [System.Array]) {
+      foreach ($child in $row) { $child }
+    } else {
+      $row
+    }
+  }
+}
+
+function HasUsefulCpuSensor($rows) {
+  foreach ($row in @($rows)) {
+    if ($null -eq $row.value) { continue }
+    $text = "$($row.hardwareName) $($row.name)"
+    if ($row.type -match "Temperature" -and $text -match "cpu|core|package|processor" -and [double]$row.value -gt 0) { return $true }
+  }
+  return $false
+}
+
+function ReadLibreHardwareMonitorLibSensors {
+  $root = (Get-Location).Path
+  $scriptPath = Join-Path $root "scripts\read-hardware-sensors.ps1"
+  $cachePath = Join-Path $root "tools\hardware-sensors-cache.json"
+  $rows = @()
+  if (-not (Test-Path $scriptPath)) { return $rows }
+  $sensorShell = FindSensorShell
+  try {
+    $json = & $sensorShell -NoProfile -ExecutionPolicy Bypass -File $scriptPath -Root $root 2>$null
+    $rows = @(ParseSensorJson $json)
+  } catch {}
+  if ((HasUsefulCpuSensor $rows) -or (-not $allowElevatedSensorStart)) { return $rows }
+  try {
+    $startedAt = Get-Date
+    $arguments = @(
+      "-NoProfile",
+      "-ExecutionPolicy",
+      "Bypass",
+      "-File",
+      ('"' + $scriptPath + '"'),
+      "-Root",
+      ('"' + $root + '"'),
+      "-OutputPath",
+      ('"' + $cachePath + '"')
+    )
+    Start-Process -FilePath $sensorShell -Verb RunAs -ArgumentList $arguments -WindowStyle Hidden | Out-Null
+    for ($index = 0; $index -lt 30; $index++) {
+      Start-Sleep -Milliseconds 500
+      if (-not (Test-Path $cachePath)) { continue }
+      $cacheItem = Get-Item $cachePath -ErrorAction SilentlyContinue
+      if ($null -eq $cacheItem -or $cacheItem.LastWriteTime -lt $startedAt) { continue }
+      $cacheRows = @(ParseSensorJson (Get-Content -Path $cachePath -Raw -ErrorAction SilentlyContinue))
+      if ($cacheRows.Count -gt 0) { return $cacheRows }
+    }
+  } catch {}
+  return $rows
 }
 
 StartSensorProviderIfPresent
@@ -260,7 +345,7 @@ try {
     }
 } catch {}
 
-$sensorReadings = @()
+$sensorReadings = @(FlattenSensorRows (ReadLibreHardwareMonitorLibSensors))
 foreach ($namespace in @("root\LibreHardwareMonitor", "root\OpenHardwareMonitor")) {
   try {
     $sensorReadings += @(Get-CimInstance -Namespace $namespace -ClassName Sensor -ErrorAction SilentlyContinue | ForEach-Object {
@@ -307,6 +392,10 @@ $networks = Get-CimInstance Win32_PerfFormattedData_Tcpip_NetworkInterface -Erro
 } | ConvertTo-Json -Depth 8
 `;
 
+function buildHardwareScript(allowElevatedSensorStart: boolean): string {
+  return HARDWARE_SCRIPT.replace("__ALLOW_ELEVATED_SENSOR_START__", allowElevatedSensorStart ? "$true" : "$false");
+}
+
 export function parseHardwareSnapshotJson(stdout: string): HardwareSnapshot {
   return normalizeHardwareSnapshot(JSON.parse(stdout) as HardwareSnapshot);
 }
@@ -314,10 +403,10 @@ export function parseHardwareSnapshotJson(stdout: string): HardwareSnapshot {
 export function normalizeHardwareSnapshot(snapshot: HardwareSnapshot): HardwareSnapshot {
   const sensorReadings = snapshot.sensorReadings ?? [];
   const cpuTemperature = snapshot.cpu.temperatureCelsius ?? sensorReadings
-    .filter((sensor) => sensor.value !== null && /temperature/i.test(sensor.type) && /cpu|core|package/i.test(`${sensor.hardwareName} ${sensor.name}`))
+    .filter((sensor) => sensor.value !== null && /temperature/i.test(sensor.type) && /cpu|core|package/i.test(`${sensor.hardwareName} ${sensor.name}`) && !/gpu|nvidia|radeon|graphics/i.test(`${sensor.hardwareName} ${sensor.name}`))
     .reduce<number | null>((max, sensor) => Math.max(max ?? Number.NEGATIVE_INFINITY, sensor.value ?? Number.NEGATIVE_INFINITY), null);
   const cpuPower = snapshot.cpu.powerWatts ?? sensorReadings
-    .filter((sensor) => sensor.value !== null && /power/i.test(sensor.type) && /cpu|package|processor/i.test(`${sensor.hardwareName} ${sensor.name}`))
+    .filter((sensor) => sensor.value !== null && /power/i.test(sensor.type) && /cpu|package|processor/i.test(`${sensor.hardwareName} ${sensor.name}`) && !/gpu|nvidia|radeon|graphics/i.test(`${sensor.hardwareName} ${sensor.name}`))
     .reduce<number | null>((max, sensor) => Math.max(max ?? Number.NEGATIVE_INFINITY, sensor.value ?? Number.NEGATIVE_INFINITY), null);
   const integratedGpuCounterPool = (snapshot.gpuCounters ?? [])
     .filter((counter) => (counter.dedicatedUsageBytes ?? 0) < 268_435_456)
@@ -359,8 +448,11 @@ export function normalizeHardwareSnapshot(snapshot: HardwareSnapshot): HardwareS
   };
 }
 
+let sensorElevationAttempted = false;
+
 export async function collectHardwareSnapshot(runner: CommandRunner = runCommand): Promise<HardwareSnapshot> {
-  const result = await runPowerShell(HARDWARE_SCRIPT, runner);
+  const result = await runPowerShell(buildHardwareScript(!sensorElevationAttempted), runner);
+  sensorElevationAttempted = true;
   if (result.exitCode !== 0) {
     throw new Error(result.stderr || "无法读取硬件资源");
   }
