@@ -25,7 +25,15 @@ function makeApp() {
       startContainer: vi.fn().mockResolvedValue(undefined),
       stopContainer: vi.fn().mockResolvedValue(undefined),
       startComposeProject: vi.fn().mockResolvedValue(undefined),
-      stopComposeProject: vi.fn().mockResolvedValue(undefined)
+      stopComposeProject: vi.fn().mockResolvedValue(undefined),
+      collectHardwareSnapshot: vi.fn().mockResolvedValue({
+        sampledAt: "2026-06-05T10:00:00.000Z",
+        cpu: { name: "Intel Core i9", usagePercent: 30, powerWatts: null, temperatureCelsius: null, cores: [] },
+        memory: { totalBytes: 100, usedBytes: 50, usagePercent: 50 },
+        disks: [],
+        gpus: [],
+        networks: []
+      })
     }
   });
 }
@@ -109,6 +117,18 @@ describe("应用服务", () => {
 
     expect(services.startComposeProject).toHaveBeenCalledWith("searxng");
     expect(services.stopComposeProject).toHaveBeenCalledWith("searxng");
+  });
+
+  it("读取硬件资源快照", async () => {
+    const { app, services } = makeApp();
+    const agent = request.agent(app);
+    await agent.post("/api/auth/login").send({ password: "secret" });
+
+    const response = await agent.get("/api/hardware/snapshot");
+
+    expect(response.status).toBe(200);
+    expect(response.body.item.cpu.usagePercent).toBe(30);
+    expect(services.collectHardwareSnapshot).toHaveBeenCalled();
   });
 
   it("退出登录", async () => {

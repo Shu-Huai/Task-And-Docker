@@ -7,6 +7,24 @@ function jsonResponse(body: unknown, status = 200) {
   return Promise.resolve(new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } }));
 }
 
+const hardwareSnapshot = {
+  sampledAt: "2026-06-05T10:00:00.000Z",
+  cpu: {
+    name: "Intel Core i9",
+    usagePercent: 24,
+    powerWatts: 38,
+    temperatureCelsius: 66,
+    cores: [
+      { name: "0", usagePercent: 12 },
+      { name: "1", usagePercent: 40 }
+    ]
+  },
+  memory: { totalBytes: 34359738368, usedBytes: 17179869184, usagePercent: 50 },
+  disks: [{ name: "C:", label: "System", totalBytes: 1000, freeBytes: 250, usedBytes: 750, usagePercent: 75, readBytesPerSecond: 1024, writeBytesPerSecond: 2048 }],
+  gpus: [{ name: "NVIDIA GeForce RTX", vendor: "nvidia", usagePercent: 18, memoryTotalBytes: 8589934592, memoryUsedBytes: 2147483648, temperatureCelsius: 61, powerWatts: 92 }],
+  networks: [{ name: "Ethernet", speedBitsPerSecond: 1000000000, receiveBytesPerSecond: 4096, transmitBytesPerSecond: 2048 }]
+};
+
 describe("前端应用", () => {
   beforeEach(() => {
     vi.stubGlobal(
@@ -174,5 +192,33 @@ describe("前端应用", () => {
     await userEvent.click(screen.getByRole("button", { name: "取消" }));
 
     await waitFor(() => expect(screen.queryByRole("dialog", { name: "确认结束任务" })).not.toBeInTheDocument());
+  });
+
+  it("显示硬件资源页面并切换刷新频率", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((input: RequestInfo | URL) => {
+        const url = String(input);
+        if (url.endsWith("/api/me")) return jsonResponse({ authenticated: true });
+        if (url.endsWith("/api/tasks")) return jsonResponse({ items: [] });
+        if (url.endsWith("/api/docker/containers")) return jsonResponse({ items: [] });
+        if (url.endsWith("/api/hardware/snapshot")) return jsonResponse({ item: hardwareSnapshot });
+        return jsonResponse({});
+      })
+    );
+    render(<App />);
+
+    const hardwareButtons = await screen.findAllByRole("button", { name: "硬件资源" });
+    await userEvent.click(hardwareButtons[0]);
+
+    expect(await screen.findByRole("heading", { level: 1, name: "硬件资源" })).toBeInTheDocument();
+    expect(screen.getByText("Intel Core i9")).toBeInTheDocument();
+    expect(screen.getByText("NVIDIA GeForce RTX")).toBeInTheDocument();
+    expect(screen.getByText("C:")).toBeInTheDocument();
+    expect(screen.getByText("Ethernet")).toBeInTheDocument();
+
+    await userEvent.selectOptions(screen.getByLabelText("刷新频率"), "5000");
+
+    expect(screen.getByLabelText("刷新频率")).toHaveValue("5000");
   });
 });

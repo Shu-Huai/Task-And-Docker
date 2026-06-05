@@ -12,6 +12,7 @@
 - 基于本地配置密码的登录保护，并使用 HTTP-only 会话 Cookie。
 - 任务计划程序页面读取配置中的文件夹，例如 `\Auto-Start-A\`。
 - Docker 页面通过本机 Docker CLI 读取容器，并按 Docker Compose 项目折叠分组、启动或停止整组容器。
+- 硬件资源页面展示 CPU、内存、磁盘、GPU 和网卡指标，并支持每秒、每五秒、每分钟刷新。
 - 桌面端使用左侧导航栏，手机端使用底部导航栏。
 - 停止、结束、禁用等高影响操作会先弹出确认。
 - 后端执行操作前会先确认目标资源存在于当前本机列表中。
@@ -90,6 +91,7 @@ npm run build
 
 - 任务计划程序使用本机 PowerShell 命令。
 - Docker 使用本机 `docker` CLI。
+- 硬件资源使用本机 PowerShell、CIM 和性能计数器采样；NVIDIA GPU 会额外尝试读取 `nvidia-smi`，Intel、AMD 或不可用字段会按实际可读数据展示。
 
 开发阶段曾使用 SSH 验证目标服务器上的命令行为，但最终产品不包含 SSH 功能。
 
