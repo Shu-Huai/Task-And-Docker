@@ -21,7 +21,7 @@
 
 - Windows
 - Node.js 24 或更新版本
-- PowerShell，并带有 Windows ScheduledTasks 模块
+- PowerShell
 - Docker CLI 已加入 `PATH`
 - 如需 CPU 温度和 CPU 功耗：安装本项目提供的本地传感器程序
 
@@ -88,15 +88,15 @@ npm run build
 
 ## 启用 CPU 温度和功耗
 
-Windows 自带 CIM 和性能计数器不会稳定暴露 CPU 温度、CPU 封装功耗。本项目提供安装脚本，把 LibreHardwareMonitor 作为本机传感器提供器安装到 `tools/LibreHardwareMonitor`，并注册一个高权限开机任务，让应用能从 `root\LibreHardwareMonitor` 读取 CPU 温度和功耗。
+Windows 自带 CIM 和性能计数器不会稳定暴露 CPU 温度、CPU 封装功耗。本项目提供安装脚本，把 LibreHardwareMonitor 作为本机传感器提供器安装到 `tools/LibreHardwareMonitor`。应用不会注册开机任务；运行 `npm run dev` 或 `npm start` 后，后端会在硬件采样前按需启动这个本地程序，并从 `root\LibreHardwareMonitor` 读取 CPU 温度和功耗。
 
-在部署机器上用管理员 PowerShell 运行：
+在部署机器上运行：
 
 ```powershell
 npm run install:sensors
 ```
 
-安装完成后重启本应用，再打开硬件资源页面。`tools/` 目录只保存本机下载的工具，不进入 Git 仓库。
+安装完成后运行 `npm run dev` 或 `npm start`，再打开硬件资源页面。`tools/` 目录只保存本机下载的工具，不进入 Git 仓库。如果 CPU 传感器仍然为空，请用管理员 PowerShell 启动应用进程。
 
 ## 运行说明
 
