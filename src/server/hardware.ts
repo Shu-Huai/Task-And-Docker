@@ -53,6 +53,27 @@ function NumberOrNull($value) {
   try { return [double]$value } catch { return $null }
 }
 
+function NormalizeName($value) {
+  if ($null -eq $value) { return "" }
+  return ("$value".ToLowerInvariant() -replace "[^a-z0-9]", "")
+}
+
+function ParseLinkSpeedBits($value) {
+  if ($null -eq $value) { return $null }
+  $text = "$value".Trim()
+  if ($text -match "^([\d\.]+)\s*([kmgt]?)(?:b|bps)$") {
+    $number = [double]$matches[1]
+    switch ($matches[2].ToLowerInvariant()) {
+      "k" { return $number * 1000 }
+      "m" { return $number * 1000000 }
+      "g" { return $number * 1000000000 }
+      "t" { return $number * 1000000000000 }
+      default { return $number }
+    }
+  }
+  return NumberOrNull $value
+}
+
 function PercentOrNull($used, $total) {
   if ($null -eq $total -or [double]$total -le 0) { return $null }
   return [math]::Round(([double]$used / [double]$total) * 100, 1)
@@ -81,7 +102,7 @@ $coreCounters = Get-CimInstance Win32_PerfFormattedData_Counters_ProcessorInform
 $os = Get-CimInstance Win32_OperatingSystem
 $memoryTotal = [double]$os.TotalVisibleMemorySize * 1024
 $memoryFree = [double]$os.FreePhysicalMemory * 1024
-$memoryUsed = [math]::Max(0, $memoryTotal - $memoryFree)
+$memoryUsed = [math]::Max([double]0, [double]($memoryTotal - $memoryFree))
 
 $diskPerf = @{}
 Get-CimInstance Win32_PerfFormattedData_PerfDisk_LogicalDisk -ErrorAction SilentlyContinue |
@@ -94,7 +115,7 @@ $disks = Get-CimInstance Win32_LogicalDisk -Filter "DriveType=3" |
     $perf = $diskPerf[$_.DeviceID]
     $size = if ($null -ne $_.Size) { [double]$_.Size } else { 0 }
     $free = if ($null -ne $_.FreeSpace) { [double]$_.FreeSpace } else { 0 }
-    $used = [math]::Max(0, $size - $free)
+    $used = [math]::Max([double]0, [double]($size - $free))
     [pscustomobject]@{
       name = $_.DeviceID
       label = "$($_.VolumeName)"
@@ -126,21 +147,37 @@ try {
 } catch {}
 
 $gpuControllers = @(Get-CimInstance Win32_VideoController -ErrorAction SilentlyContinue)
+$gpuEngineUsage = $null
+try {
+  $gpuEngineSamples = @(Get-CimInstance -Namespace root\cimv2 -ClassName Win32_PerfFormattedData_GPUPerformanceCounters_GPUEngine -ErrorAction SilentlyContinue)
+  if ($gpuEngineSamples.Count -gt 0) {
+    $gpuEngineUsage = [math]::Min(100, ($gpuEngineSamples | Measure-Object -Property UtilizationPercentage -Sum).Sum)
+  }
+} catch {}
+
+$gpuAdapterMemoryRows = @()
+try {
+  $gpuAdapterMemoryRows = @(Get-CimInstance -Namespace root\cimv2 -ClassName Win32_PerfFormattedData_GPUPerformanceCounters_GPUAdapterMemory -ErrorAction SilentlyContinue)
+} catch {}
+$sharedGpuUsage = if ($gpuAdapterMemoryRows.Count -gt 0) { ($gpuAdapterMemoryRows | Measure-Object -Property TotalCommitted -Sum).Sum } else { $null }
+
 $gpus = @()
 foreach ($controller in $gpuControllers) {
   $vendor = GpuVendor $controller.Name
+  if ("$($controller.Name)".ToLowerInvariant() -match "virtual|remote|mirror|basic render|display adapter") { continue }
   $nvidia = $null
   if ($vendor -eq "nvidia") {
     $nvidia = $nvidiaRows | Where-Object { $_.name -eq $controller.Name -or $controller.Name.Contains($_.name) -or $_.name.Contains($controller.Name) } | Select-Object -First 1
     if ($null -eq $nvidia -and $nvidiaRows.Count -eq 1) { $nvidia = $nvidiaRows[0] }
   }
-  $memoryTotal = if ($null -ne $nvidia) { $nvidia.memoryTotalBytes } elseif ($controller.AdapterRAM) { [double]$controller.AdapterRAM } else { $null }
+  $gpuMemoryTotal = if ($null -ne $nvidia) { $nvidia.memoryTotalBytes } elseif ($controller.AdapterRAM) { [double]$controller.AdapterRAM } else { $null }
+  $gpuMemoryUsed = if ($null -ne $nvidia) { $nvidia.memoryUsedBytes } elseif ($null -ne $sharedGpuUsage -and $gpuControllers.Count -eq 1) { [double]$sharedGpuUsage } else { $null }
   $gpus += [pscustomobject]@{
     name = "$($controller.Name)"
     vendor = $vendor
-    usagePercent = if ($null -ne $nvidia) { $nvidia.usagePercent } else { $null }
-    memoryTotalBytes = $memoryTotal
-    memoryUsedBytes = if ($null -ne $nvidia) { $nvidia.memoryUsedBytes } else { $null }
+    usagePercent = if ($null -ne $nvidia) { $nvidia.usagePercent } elseif ($null -ne $gpuEngineUsage -and $gpuControllers.Count -eq 1) { NumberOrNull $gpuEngineUsage } else { $null }
+    memoryTotalBytes = $gpuMemoryTotal
+    memoryUsedBytes = $gpuMemoryUsed
     temperatureCelsius = if ($null -ne $nvidia) { $nvidia.temperatureCelsius } else { $null }
     powerWatts = if ($null -ne $nvidia) { $nvidia.powerWatts } else { $null }
   }
@@ -148,14 +185,28 @@ foreach ($controller in $gpuControllers) {
 
 $adapterSpeeds = @{}
 Get-CimInstance Win32_NetworkAdapter -Filter "NetEnabled=true" -ErrorAction SilentlyContinue |
-  ForEach-Object { $adapterSpeeds[$_.Name] = NumberOrNull $_.Speed }
+  ForEach-Object {
+    $speed = NumberOrNull $_.Speed
+    $adapterSpeeds[(NormalizeName $_.Name)] = $speed
+    if ($_.NetConnectionID) { $adapterSpeeds[(NormalizeName $_.NetConnectionID)] = $speed }
+  }
+
+try {
+  Get-NetAdapter -ErrorAction SilentlyContinue |
+    ForEach-Object {
+      $speed = ParseLinkSpeedBits $_.LinkSpeed
+      if ($null -eq $speed -or $speed -le 0) { return }
+      $adapterSpeeds[(NormalizeName $_.Name)] = $speed
+      if ($_.InterfaceDescription) { $adapterSpeeds[(NormalizeName $_.InterfaceDescription)] = $speed }
+    }
+} catch {}
 
 $networks = Get-CimInstance Win32_PerfFormattedData_Tcpip_NetworkInterface -ErrorAction SilentlyContinue |
   Sort-Object Name |
   ForEach-Object {
     [pscustomobject]@{
       name = $_.Name
-      speedBitsPerSecond = if ($adapterSpeeds.ContainsKey($_.Name)) { $adapterSpeeds[$_.Name] } else { $null }
+      speedBitsPerSecond = if ($adapterSpeeds.ContainsKey((NormalizeName $_.Name))) { $adapterSpeeds[(NormalizeName $_.Name)] } else { $null }
       receiveBytesPerSecond = NumberOrNull $_.BytesReceivedPersec
       transmitBytesPerSecond = NumberOrNull $_.BytesSentPersec
     }
@@ -182,7 +233,25 @@ $networks = Get-CimInstance Win32_PerfFormattedData_Tcpip_NetworkInterface -Erro
 `;
 
 export function parseHardwareSnapshotJson(stdout: string): HardwareSnapshot {
-  return JSON.parse(stdout) as HardwareSnapshot;
+  return normalizeHardwareSnapshot(JSON.parse(stdout) as HardwareSnapshot);
+}
+
+export function normalizeHardwareSnapshot(snapshot: HardwareSnapshot): HardwareSnapshot {
+  return {
+    ...snapshot,
+    disks: snapshot.disks.map((disk) => {
+      const repairedUsedBytes = disk.usedBytes === null;
+      const usedBytes = disk.usedBytes ?? (disk.totalBytes > 0 ? Math.max(0, disk.totalBytes - disk.freeBytes) : null);
+      return {
+        ...disk,
+        usedBytes,
+        usagePercent: repairedUsedBytes || disk.usagePercent === null
+          ? (usedBytes !== null && disk.totalBytes > 0 ? Math.round((usedBytes / disk.totalBytes) * 1000) / 10 : null)
+          : disk.usagePercent
+      };
+    }),
+    gpus: snapshot.gpus.filter((gpu) => !/virtual|remote|mirror|basic render|display adapter/i.test(gpu.name))
+  };
 }
 
 export async function collectHardwareSnapshot(runner: CommandRunner = runCommand): Promise<HardwareSnapshot> {
