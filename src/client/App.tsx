@@ -357,6 +357,8 @@ function HardwarePage({
         <>
           <div className="stat-grid">
             <StatCard icon={<Cpu size={18} />} label="CPU 占用率" value={formatPercent(snapshot.cpu.usagePercent)} detail={snapshot.cpu.name} trend={cpuTrend} />
+            <StatCard icon={<Thermometer size={18} />} label="CPU 温度" value={optionalMetric(snapshot.cpu.temperatureCelsius, "°C") ?? "-"} detail="处理器传感器" />
+            <StatCard icon={<Zap size={18} />} label="CPU 功耗" value={optionalMetric(snapshot.cpu.powerWatts, "W") ?? "-"} detail="CPU Package" />
             <StatCard icon={<MemoryStick size={18} />} label="内存占用率" value={formatPercent(snapshot.memory.usagePercent)} detail={`${formatBytes(snapshot.memory.usedBytes)} / ${formatBytes(snapshot.memory.totalBytes)}`} trend={memoryTrend} />
             <StatCard icon={<HardDrive size={18} />} label="磁盘数量" value={`${snapshot.disks.length}`} detail="本机固定磁盘" />
             <StatCard icon={<Network size={18} />} label="网络吞吐" value={`↓ ${formatRate(networkReceive)}`} detail={`↑ ${formatRate(networkTransmit)}`} />
