@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
-import { collectHardwareSnapshot, parseHardwareSnapshotJson } from "./hardware";
+import { collectHardwareSnapshot, normalizeHardwareSnapshot, parseHardwareSnapshotJson, type HardwareSnapshot } from "./hardware";
 
-const sample = {
+const sample: HardwareSnapshot = {
   sampledAt: "2026-06-05T10:00:00.000Z",
   cpu: {
     name: "Intel Core i9",
@@ -84,5 +84,28 @@ describe("硬件资源快照", () => {
     await collectHardwareSnapshot(run);
 
     expect(run).toHaveBeenCalledWith("powershell.exe", expect.arrayContaining(["-EncodedCommand"]));
+  });
+
+  it("过滤虚拟显卡并保留真实显卡", () => {
+    const snapshot = normalizeHardwareSnapshot({
+      ...sample,
+      gpus: [
+        { name: "GameViewer Virtual Display Adapter", vendor: "unknown", usagePercent: null, memoryTotalBytes: null, memoryUsedBytes: null, temperatureCelsius: null, powerWatts: null },
+        ...sample.gpus
+      ]
+    });
+
+    expect(snapshot.gpus.map((gpu) => gpu.name)).toEqual(["NVIDIA GeForce RTX", "Intel UHD Graphics"]);
+  });
+
+  it("修复磁盘空间采样中的缺失使用量", () => {
+    const snapshot = normalizeHardwareSnapshot(({
+      ...sample,
+      memory: { totalBytes: 137216507904, usedBytes: null, usagePercent: 0 },
+      disks: [{ ...sample.disks[0], totalBytes: 1000, freeBytes: 250, usedBytes: null, usagePercent: 0 }]
+    } as unknown) as HardwareSnapshot);
+
+    expect(snapshot.disks[0].usedBytes).toBe(750);
+    expect(snapshot.disks[0].usagePercent).toBe(75);
   });
 });
