@@ -45,6 +45,19 @@ export type HardwareSnapshot = {
     receiveBytesPerSecond: number | null;
     transmitBytesPerSecond: number | null;
   }>;
+  sensorReadings?: Array<{
+    hardwareName: string;
+    name: string;
+    type: string;
+    value: number | null;
+  }>;
+  gpuCounters?: Array<{
+    luid: string;
+    usagePercent: number | null;
+    totalCommittedBytes: number | null;
+    dedicatedUsageBytes: number | null;
+    sharedUsageBytes: number | null;
+  }>;
 };
 
 const HARDWARE_SCRIPT = String.raw`
@@ -148,10 +161,18 @@ try {
 
 $gpuControllers = @(Get-CimInstance Win32_VideoController -ErrorAction SilentlyContinue)
 $gpuEngineUsage = $null
+$gpuEngineByLuid = @{}
 try {
   $gpuEngineSamples = @(Get-CimInstance -Namespace root\cimv2 -ClassName Win32_PerfFormattedData_GPUPerformanceCounters_GPUEngine -ErrorAction SilentlyContinue)
   if ($gpuEngineSamples.Count -gt 0) {
     $gpuEngineUsage = [math]::Min(100, ($gpuEngineSamples | Measure-Object -Property UtilizationPercentage -Sum).Sum)
+    $gpuEngineSamples | ForEach-Object {
+      if ($_.Name -match "luid_(0x[0-9a-fA-F]+_0x[0-9a-fA-F]+)") {
+        $luid = $matches[1]
+        if (-not $gpuEngineByLuid.ContainsKey($luid)) { $gpuEngineByLuid[$luid] = 0 }
+        $gpuEngineByLuid[$luid] += [double]$_.UtilizationPercentage
+      }
+    }
   }
 } catch {}
 
@@ -160,6 +181,17 @@ try {
   $gpuAdapterMemoryRows = @(Get-CimInstance -Namespace root\cimv2 -ClassName Win32_PerfFormattedData_GPUPerformanceCounters_GPUAdapterMemory -ErrorAction SilentlyContinue)
 } catch {}
 $sharedGpuUsage = if ($gpuAdapterMemoryRows.Count -gt 0) { ($gpuAdapterMemoryRows | Measure-Object -Property TotalCommitted -Sum).Sum } else { $null }
+$gpuCounters = @($gpuAdapterMemoryRows | ForEach-Object {
+  $luid = ""
+  if ($_.Name -match "luid_(0x[0-9a-fA-F]+_0x[0-9a-fA-F]+)") { $luid = $matches[1] }
+  [pscustomobject]@{
+    luid = $luid
+    usagePercent = if ($gpuEngineByLuid.ContainsKey($luid)) { [math]::Min(100, [double]$gpuEngineByLuid[$luid]) } else { $null }
+    totalCommittedBytes = NumberOrNull $_.TotalCommitted
+    dedicatedUsageBytes = NumberOrNull $_.DedicatedUsage
+    sharedUsageBytes = NumberOrNull $_.SharedUsage
+  }
+})
 
 $gpus = @()
 foreach ($controller in $gpuControllers) {
@@ -201,6 +233,20 @@ try {
     }
 } catch {}
 
+$sensorReadings = @()
+foreach ($namespace in @("root\LibreHardwareMonitor", "root\OpenHardwareMonitor")) {
+  try {
+    $sensorReadings += @(Get-CimInstance -Namespace $namespace -ClassName Sensor -ErrorAction SilentlyContinue | ForEach-Object {
+      [pscustomobject]@{
+        hardwareName = "$($_.Parent)"
+        name = "$($_.Name)"
+        type = "$($_.SensorType)"
+        value = NumberOrNull $_.Value
+      }
+    })
+  } catch {}
+}
+
 $networks = Get-CimInstance Win32_PerfFormattedData_Tcpip_NetworkInterface -ErrorAction SilentlyContinue |
   Sort-Object Name |
   ForEach-Object {
@@ -229,6 +275,8 @@ $networks = Get-CimInstance Win32_PerfFormattedData_Tcpip_NetworkInterface -Erro
   disks = @($disks)
   gpus = @($gpus)
   networks = @($networks)
+  sensorReadings = @($sensorReadings)
+  gpuCounters = @($gpuCounters)
 } | ConvertTo-Json -Depth 8
 `;
 
@@ -237,8 +285,24 @@ export function parseHardwareSnapshotJson(stdout: string): HardwareSnapshot {
 }
 
 export function normalizeHardwareSnapshot(snapshot: HardwareSnapshot): HardwareSnapshot {
+  const sensorReadings = snapshot.sensorReadings ?? [];
+  const cpuTemperature = snapshot.cpu.temperatureCelsius ?? sensorReadings
+    .filter((sensor) => sensor.value !== null && /temperature/i.test(sensor.type) && /cpu|core|package/i.test(`${sensor.hardwareName} ${sensor.name}`))
+    .reduce<number | null>((max, sensor) => Math.max(max ?? Number.NEGATIVE_INFINITY, sensor.value ?? Number.NEGATIVE_INFINITY), null);
+  const cpuPower = snapshot.cpu.powerWatts ?? sensorReadings
+    .filter((sensor) => sensor.value !== null && /power/i.test(sensor.type) && /cpu|package|processor/i.test(`${sensor.hardwareName} ${sensor.name}`))
+    .reduce<number | null>((max, sensor) => Math.max(max ?? Number.NEGATIVE_INFINITY, sensor.value ?? Number.NEGATIVE_INFINITY), null);
+  const integratedGpuCounterPool = (snapshot.gpuCounters ?? [])
+    .filter((counter) => (counter.dedicatedUsageBytes ?? 0) < 268_435_456)
+    .sort((left, right) => (right.totalCommittedBytes ?? 0) - (left.totalCommittedBytes ?? 0));
+
   return {
     ...snapshot,
+    cpu: {
+      ...snapshot.cpu,
+      temperatureCelsius: cpuTemperature === Number.NEGATIVE_INFINITY ? null : cpuTemperature,
+      powerWatts: cpuPower === Number.NEGATIVE_INFINITY ? null : cpuPower
+    },
     disks: snapshot.disks.map((disk) => {
       const repairedUsedBytes = disk.usedBytes === null;
       const usedBytes = disk.usedBytes ?? (disk.totalBytes > 0 ? Math.max(0, disk.totalBytes - disk.freeBytes) : null);
@@ -250,7 +314,21 @@ export function normalizeHardwareSnapshot(snapshot: HardwareSnapshot): HardwareS
           : disk.usagePercent
       };
     }),
-    gpus: snapshot.gpus.filter((gpu) => !/virtual|remote|mirror|basic render|display adapter/i.test(gpu.name))
+    gpus: snapshot.gpus
+      .filter((gpu) => !/virtual|remote|mirror|basic render|display adapter/i.test(gpu.name))
+      .map((gpu) => {
+        if (gpu.vendor === "nvidia" || (gpu.usagePercent !== null && gpu.memoryUsedBytes !== null)) return gpu;
+        const counter = integratedGpuCounterPool.shift();
+        const rawMemoryUsed = gpu.memoryUsedBytes ?? counter?.totalCommittedBytes ?? null;
+        const memoryUsedBytes = rawMemoryUsed !== null && gpu.memoryTotalBytes !== null
+          ? Math.min(rawMemoryUsed, gpu.memoryTotalBytes)
+          : rawMemoryUsed;
+        return {
+          ...gpu,
+          usagePercent: gpu.usagePercent ?? counter?.usagePercent ?? null,
+          memoryUsedBytes
+        };
+      })
   };
 }
 
