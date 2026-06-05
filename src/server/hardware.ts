@@ -172,6 +172,14 @@ function HasUsefulCpuSensor($rows) {
   return $false
 }
 
+function ReadSensorCache($cachePath) {
+  if (-not (Test-Path $cachePath)) { return @() }
+  try {
+    return @(ParseSensorJson (Get-Content -Path $cachePath -Raw -ErrorAction Stop))
+  } catch {}
+  return @()
+}
+
 function ReadLibreHardwareMonitorLibSensors {
   $root = (Get-Location).Path
   $scriptPath = Join-Path $root "scripts\read-hardware-sensors.ps1"
@@ -183,7 +191,10 @@ function ReadLibreHardwareMonitorLibSensors {
     $json = & $sensorShell -NoProfile -ExecutionPolicy Bypass -File $scriptPath -Root $root 2>$null
     $rows = @(ParseSensorJson $json)
   } catch {}
-  if ((HasUsefulCpuSensor $rows) -or (-not $allowElevatedSensorStart)) { return $rows }
+  if (HasUsefulCpuSensor $rows) { return $rows }
+  $existingCacheRows = @(ReadSensorCache $cachePath)
+  if (HasUsefulCpuSensor $existingCacheRows) { return $existingCacheRows }
+  if (-not $allowElevatedSensorStart) { return $rows }
   try {
     $startedAt = Get-Date
     $arguments = @(
@@ -203,10 +214,12 @@ function ReadLibreHardwareMonitorLibSensors {
       if (-not (Test-Path $cachePath)) { continue }
       $cacheItem = Get-Item $cachePath -ErrorAction SilentlyContinue
       if ($null -eq $cacheItem -or $cacheItem.LastWriteTime -lt $startedAt) { continue }
-      $cacheRows = @(ParseSensorJson (Get-Content -Path $cachePath -Raw -ErrorAction SilentlyContinue))
+      $cacheRows = @(ReadSensorCache $cachePath)
       if ($cacheRows.Count -gt 0) { return $cacheRows }
     }
   } catch {}
+  $fallbackCacheRows = @(ReadSensorCache $cachePath)
+  if (HasUsefulCpuSensor $fallbackCacheRows) { return $fallbackCacheRows }
   return $rows
 }
 
@@ -448,11 +461,15 @@ export function normalizeHardwareSnapshot(snapshot: HardwareSnapshot): HardwareS
   };
 }
 
-let sensorElevationAttempted = false;
+let lastSensorElevationAttemptAt = 0;
 
 export async function collectHardwareSnapshot(runner: CommandRunner = runCommand): Promise<HardwareSnapshot> {
-  const result = await runPowerShell(buildHardwareScript(!sensorElevationAttempted), runner);
-  sensorElevationAttempted = true;
+  const now = Date.now();
+  const allowElevatedSensorStart = now - lastSensorElevationAttemptAt > 300_000;
+  if (allowElevatedSensorStart) {
+    lastSensorElevationAttemptAt = now;
+  }
+  const result = await runPowerShell(buildHardwareScript(allowElevatedSensorStart), runner);
   if (result.exitCode !== 0) {
     throw new Error(result.stderr || "无法读取硬件资源");
   }
