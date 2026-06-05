@@ -2,6 +2,7 @@ import express, { type Request, type Response } from "express";
 import session from "express-session";
 import helmet from "helmet";
 import type { AppConfig } from "./config";
+import { collectHardwareSnapshot, type HardwareSnapshot } from "./hardware";
 import {
   listContainers,
   startComposeProject,
@@ -34,6 +35,7 @@ export type AppServices = {
   stopContainer: (id: string) => Promise<void>;
   startComposeProject: (project: string) => Promise<void>;
   stopComposeProject: (project: string) => Promise<void>;
+  collectHardwareSnapshot: () => Promise<HardwareSnapshot>;
 };
 
 type CreateAppOptions = {
@@ -52,7 +54,8 @@ function defaultServices(): AppServices {
     startContainer,
     stopContainer,
     startComposeProject,
-    stopComposeProject
+    stopComposeProject,
+    collectHardwareSnapshot
   };
 }
 
@@ -150,6 +153,13 @@ export function createApp({ config, services: serviceOverrides = {}, staticDir }
     "/api/docker/containers",
     asyncRoute(async (_req, res) => {
       res.json({ items: await services.listContainers() });
+    })
+  );
+
+  app.get(
+    "/api/hardware/snapshot",
+    asyncRoute(async (_req, res) => {
+      res.json({ item: await services.collectHardwareSnapshot() });
     })
   );
 
