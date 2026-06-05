@@ -91,7 +91,8 @@ npm run build
 
 - 任务计划程序使用本机 PowerShell 命令。
 - Docker 使用本机 `docker` CLI。
-- 硬件资源使用本机 PowerShell、CIM 和性能计数器采样；NVIDIA GPU 会额外尝试读取 `nvidia-smi`，Intel、AMD 或不可用字段会按实际可读数据展示。
+- 硬件资源使用本机 PowerShell、CIM 和性能计数器采样；NVIDIA GPU 会额外尝试读取 `nvidia-smi`，Intel、AMD 会尝试读取 Windows GPU 性能计数器。
+- CPU 温度、CPU 功耗等传感器字段需要 LibreHardwareMonitor 或 OpenHardwareMonitor 暴露 WMI 数据；没有传感器来源时不会伪造数值。
 
 开发阶段曾使用 SSH 验证目标服务器上的命令行为，但最终产品不包含 SSH 功能。
 
