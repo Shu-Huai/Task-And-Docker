@@ -108,4 +108,32 @@ describe("硬件资源快照", () => {
     expect(snapshot.disks[0].usedBytes).toBe(750);
     expect(snapshot.disks[0].usagePercent).toBe(75);
   });
+
+  it("从传感器源补充 CPU 温度和功耗", () => {
+    const snapshot = normalizeHardwareSnapshot(({
+      ...sample,
+      cpu: { ...sample.cpu, temperatureCelsius: null, powerWatts: null },
+      sensorReadings: [
+        { hardwareName: "Intel Core i9", name: "CPU Package", type: "Temperature", value: 71 },
+        { hardwareName: "Intel Core i9", name: "CPU Package", type: "Power", value: 96 }
+      ]
+    } as unknown) as HardwareSnapshot);
+
+    expect(snapshot.cpu.temperatureCelsius).toBe(71);
+    expect(snapshot.cpu.powerWatts).toBe(96);
+  });
+
+  it("从 GPU 计数器补充核显占用和显存", () => {
+    const snapshot = normalizeHardwareSnapshot(({
+      ...sample,
+      gpus: [{ name: "Intel(R) UHD Graphics 770", vendor: "intel", usagePercent: null, memoryTotalBytes: 2147479552, memoryUsedBytes: null, temperatureCelsius: null, powerWatts: null }],
+      gpuCounters: [
+        { luid: "0x00000000_0x0000E743", usagePercent: 7, totalCommittedBytes: 5201776640, dedicatedUsageBytes: 4086259712, sharedUsageBytes: 293445632 },
+        { luid: "0x00000000_0x00010485", usagePercent: 12, totalCommittedBytes: 48193536, dedicatedUsageBytes: 0, sharedUsageBytes: 39010304 }
+      ]
+    } as unknown) as HardwareSnapshot);
+
+    expect(snapshot.gpus[0].usagePercent).toBe(12);
+    expect(snapshot.gpus[0].memoryUsedBytes).toBe(48193536);
+  });
 });
