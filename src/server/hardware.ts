@@ -100,6 +100,33 @@ function GpuVendor($name) {
   return "unknown"
 }
 
+function FindBundledLibreHardwareMonitor {
+  $paths = @(
+    (Join-Path (Get-Location) "tools\LibreHardwareMonitor"),
+    "C:\Program Files\LibreHardwareMonitor",
+    "C:\Program Files (x86)\LibreHardwareMonitor"
+  )
+  foreach ($path in $paths) {
+    if (-not (Test-Path $path)) { continue }
+    $exe = Get-ChildItem -Path $path -Recurse -Filter "LibreHardwareMonitor.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($null -ne $exe) { return $exe.FullName }
+  }
+  return $null
+}
+
+function StartSensorProviderIfPresent {
+  $process = Get-Process -Name LibreHardwareMonitor -ErrorAction SilentlyContinue | Select-Object -First 1
+  if ($null -ne $process) { return }
+  $exe = FindBundledLibreHardwareMonitor
+  if ($null -eq $exe) { return }
+  try {
+    Start-Process -FilePath $exe -WindowStyle Hidden | Out-Null
+    Start-Sleep -Seconds 4
+  } catch {}
+}
+
+StartSensorProviderIfPresent
+
 $processor = Get-CimInstance Win32_Processor | Select-Object -First 1
 $cpuTotal = Get-CimInstance Win32_PerfFormattedData_PerfOS_Processor -Filter "Name='_Total'" -ErrorAction SilentlyContinue
 $coreCounters = Get-CimInstance Win32_PerfFormattedData_Counters_ProcessorInformation -ErrorAction SilentlyContinue |
