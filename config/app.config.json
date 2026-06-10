@@ -11,5 +11,8 @@
   },
   "docker": {
     "enabled": true
+  },
+  "services": {
+    "managedPorts": []
   }
 }

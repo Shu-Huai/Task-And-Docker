@@ -1,5 +1,5 @@
 import request from "supertest";
-import { mkdtempSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it, vi } from "vitest";
@@ -10,12 +10,14 @@ const config: AppConfig = {
   server: { host: "127.0.0.1", port: 3000 },
   auth: { password: "secret" },
   tasks: { folder: "\\Auto-Start-A\\" },
-  docker: { enabled: true }
+  docker: { enabled: true },
+  services: { managedPorts: [8080] }
 };
 
-function makeApp() {
+function makeApp(configPath?: string) {
   return createApp({
     config,
+    configPath,
     services: {
       listTasks: vi.fn().mockResolvedValue([{ name: "Acme", state: "Ready", lastRunTime: null, lastTaskResult: 0 }]),
       runTask: vi.fn().mockResolvedValue(undefined),
@@ -26,6 +28,21 @@ function makeApp() {
       stopContainer: vi.fn().mockResolvedValue(undefined),
       startComposeProject: vi.fn().mockResolvedValue(undefined),
       stopComposeProject: vi.fn().mockResolvedValue(undefined),
+      listManagedServiceProcesses: vi.fn().mockResolvedValue([
+        {
+          port: 8080,
+          pid: 1844,
+          name: "python",
+          status: "listening",
+          cpuPercent: 5,
+          memoryBytes: 268435456,
+          diskReadBytesPerSecond: 1024,
+          diskWriteBytesPerSecond: 2048,
+          networkReceiveBytesPerSecond: null,
+          networkTransmitBytesPerSecond: null
+        }
+      ]),
+      stopManagedServiceProcess: vi.fn().mockResolvedValue(undefined),
       collectHardwareSnapshot: vi.fn().mockResolvedValue({
         sampledAt: "2026-06-05T10:00:00.000Z",
         cpu: { name: "Intel Core i9", usagePercent: 30, powerWatts: null, temperatureCelsius: null, cores: [] },
@@ -129,6 +146,36 @@ describe("应用服务", () => {
     expect(response.status).toBe(200);
     expect(response.body.item.cpu.usagePercent).toBe(30);
     expect(services.collectHardwareSnapshot).toHaveBeenCalled();
+  });
+
+  it("列出并停止被管理端口上的服务进程", async () => {
+    const { app, services } = makeApp();
+    const agent = request.agent(app);
+    await agent.post("/api/auth/login").send({ password: "secret" });
+
+    const list = await agent.get("/api/services/processes");
+    await agent.post("/api/services/ports/8080/stop");
+
+    expect(list.status).toBe(200);
+    expect(list.body.items[0].pid).toBe(1844);
+    expect(services.listManagedServiceProcesses).toHaveBeenCalledWith([8080]);
+    expect(services.stopManagedServiceProcess).toHaveBeenCalledWith(8080, [8080]);
+  });
+
+  it("添加被管理服务端口并写入配置文件", async () => {
+    const dir = mkdtempSync(join(tmpdir(), "task-docker-config-"));
+    const configPath = join(dir, "app.config.json");
+    writeFileSync(configPath, JSON.stringify(config));
+    const { app, services } = makeApp(configPath);
+    const agent = request.agent(app);
+    await agent.post("/api/auth/login").send({ password: "secret" });
+
+    const response = await agent.post("/api/services/ports").send({ port: 3306 });
+
+    expect(response.status).toBe(200);
+    expect(response.body.ports).toEqual([3306, 8080]);
+    expect(services.listManagedServiceProcesses).toHaveBeenCalledWith([3306, 8080]);
+    expect(JSON.parse(readFileSync(configPath, "utf8")).services.managedPorts).toEqual([3306, 8080]);
   });
 
   it("退出登录", async () => {
