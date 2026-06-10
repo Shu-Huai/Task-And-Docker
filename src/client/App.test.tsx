@@ -221,4 +221,50 @@ describe("前端应用", () => {
 
     expect(screen.getByLabelText("刷新频率")).toHaveValue("5000");
   });
+
+  it("管理按端口登记的服务进程", async () => {
+    const fetchMock = vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url.endsWith("/api/me")) return jsonResponse({ authenticated: true });
+      if (url.endsWith("/api/tasks")) return jsonResponse({ items: [] });
+      if (url.endsWith("/api/docker/containers")) return jsonResponse({ items: [] });
+      if (url.endsWith("/api/services/processes")) {
+        return jsonResponse({
+          ports: [3306, 8080],
+          items: [
+            { port: 3306, pid: null, name: null, status: "not-listening", cpuPercent: null, memoryBytes: null, diskReadBytesPerSecond: null, diskWriteBytesPerSecond: null, networkReceiveBytesPerSecond: null, networkTransmitBytesPerSecond: null },
+            { port: 8080, pid: 1844, name: "python", status: "listening", cpuPercent: 5, memoryBytes: 268435456, diskReadBytesPerSecond: 1024, diskWriteBytesPerSecond: 2048, networkReceiveBytesPerSecond: null, networkTransmitBytesPerSecond: null }
+          ]
+        });
+      }
+      if (url.endsWith("/api/services/ports") && init?.method === "POST") {
+        return jsonResponse({ ports: [3306, 6379, 8080], items: [] });
+      }
+      if (url.endsWith("/api/services/ports/8080/stop")) return jsonResponse({ ok: true });
+      return jsonResponse({});
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    render(<App />);
+
+    const serviceButtons = await screen.findAllByRole("button", { name: "服务进程" });
+    await userEvent.click(serviceButtons[0]);
+
+    expect(await screen.findByRole("heading", { level: 1, name: "服务进程" })).toBeInTheDocument();
+    expect(screen.getByText("8080")).toBeInTheDocument();
+    expect(screen.getByText("python")).toBeInTheDocument();
+    expect(screen.getByText("1844")).toBeInTheDocument();
+    expect(screen.getByText("3306")).toBeInTheDocument();
+    expect(screen.getByText("未监听")).toBeInTheDocument();
+
+    await userEvent.type(screen.getByLabelText("端口号"), "6379");
+    await userEvent.click(screen.getByRole("button", { name: "添加端口" }));
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining("/api/services/ports"), expect.objectContaining({ method: "POST" })));
+
+    await userEvent.click(screen.getByRole("button", { name: "停止端口 8080 的进程" }));
+    expect(await screen.findByRole("dialog", { name: "确认停止服务进程" })).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "确认停止" }));
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining("/api/services/ports/8080/stop"), expect.anything()));
+  });
 });
