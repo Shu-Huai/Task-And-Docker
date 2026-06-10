@@ -1,8 +1,8 @@
-import { Activity, AlertTriangle, Boxes, CalendarClock, ChevronDown, ChevronRight, Cpu, Gauge, HardDrive, LogOut, MemoryStick, Monitor, Network, Play, RefreshCw, ShieldOff, Square, Thermometer, Zap } from "lucide-react";
+import { Activity, AlertTriangle, Boxes, CalendarClock, ChevronDown, ChevronRight, Cpu, Gauge, HardDrive, LogOut, MemoryStick, Monitor, Network, Play, Plus, RefreshCw, ServerCog, ShieldOff, Square, Thermometer, Trash2, Zap } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useState } from "react";
-import { api, type ContainerRow, type HardwareSnapshot, type TaskRow } from "./api";
+import { api, type ContainerRow, type HardwareSnapshot, type ServiceProcessRow, type TaskRow } from "./api";
 
-type Page = "tasks" | "docker" | "hardware";
+type Page = "tasks" | "docker" | "services" | "hardware";
 type RefreshInterval = 1000 | 5000 | 60000;
 type ConfirmState = {
   title: string;
@@ -57,6 +57,10 @@ function formatBits(value: number | null) {
 
 function optionalMetric(value: number | null, unit: string) {
   return value === null ? null : `${Math.round(value)} ${unit}`;
+}
+
+function serviceStatusLabel(status: ServiceProcessRow["status"]) {
+  return status === "listening" ? "监听中" : "未监听";
 }
 
 function NavButton({ page, active, icon, label, onClick }: { page: Page; active: Page; icon: React.ReactNode; label: string; onClick: (page: Page) => void }) {
@@ -255,6 +259,87 @@ function DockerPage({
             </div>
           );
         })}
+      </div>
+    </section>
+  );
+}
+
+function ServicesPage({
+  items,
+  onRefresh,
+  onAddPort,
+  onRemovePort,
+  onStopPort,
+  busyAction
+}: {
+  items: ServiceProcessRow[];
+  onRefresh: () => void;
+  onAddPort: (port: number) => Promise<void>;
+  onRemovePort: (port: number) => void;
+  onStopPort: (row: ServiceProcessRow) => void;
+  busyAction: string;
+}) {
+  const [portInput, setPortInput] = useState("");
+  const listening = items.filter((item) => item.pid !== null).length;
+
+  async function submit(event: FormEvent) {
+    event.preventDefault();
+    const port = Number(portInput);
+    await onAddPort(port);
+    setPortInput("");
+  }
+
+  return (
+    <section className="page-section services-page">
+      <div className="section-toolbar service-toolbar">
+        <div>
+          <h1>服务进程</h1>
+          <p>{items.length} 个端口，{listening} 个正在监听</p>
+        </div>
+        <div className="service-toolbar-actions">
+          <form className="port-form" onSubmit={submit}>
+            <label>
+              端口号
+              <input value={portInput} onChange={(event) => setPortInput(event.target.value)} inputMode="numeric" pattern="[0-9]*" placeholder="8080" />
+            </label>
+            <button className="primary-button" type="submit" disabled={!portInput || busyAction === "service:add"}>
+              <Plus size={16} /> 添加端口
+            </button>
+          </form>
+          <button className="icon-button" onClick={onRefresh} aria-label="刷新服务进程">
+            <RefreshCw size={18} />
+          </button>
+        </div>
+      </div>
+
+      <div className="resource-list service-grid">
+        <div className="resource-row resource-head">
+          <span>端口</span>
+          <span>PID</span>
+          <span>名称</span>
+          <span>状态</span>
+          <span>CPU</span>
+          <span>内存</span>
+          <span>磁盘</span>
+          <span>网络</span>
+          <span>操作</span>
+        </div>
+        {items.map((item) => (
+          <article className={item.pid === null ? "resource-row service-offline" : "resource-row"} key={item.port}>
+            <strong>{item.port}</strong>
+            <span>{item.pid ?? "-"}</span>
+            <span>{item.name ?? "-"}</span>
+            <span className={item.status === "listening" ? "status status-running" : "status status-muted"}>{serviceStatusLabel(item.status)}</span>
+            <span>{formatPercent(item.cpuPercent)}</span>
+            <span>{formatBytes(item.memoryBytes)}</span>
+            <span>读 {formatRate(item.diskReadBytesPerSecond)} / 写 {formatRate(item.diskWriteBytesPerSecond)}</span>
+            <span>↓ {formatRate(item.networkReceiveBytesPerSecond)} / ↑ {formatRate(item.networkTransmitBytesPerSecond)}</span>
+            <div className="actions">
+              <button aria-label={`停止端口 ${item.port} 的进程`} disabled={item.pid === null || busyAction === `service:${item.port}:stop`} onClick={() => onStopPort(item)}><Square size={16} /></button>
+              <button aria-label={`移除端口 ${item.port}`} disabled={busyAction === `service:${item.port}:remove`} onClick={() => onRemovePort(item.port)}><Trash2 size={16} /></button>
+            </div>
+          </article>
+        ))}
       </div>
     </section>
   );
@@ -475,6 +560,7 @@ export default function App() {
   const [page, setPage] = useState<Page>("tasks");
   const [tasks, setTasks] = useState<TaskRow[]>([]);
   const [containers, setContainers] = useState<ContainerRow[]>([]);
+  const [serviceProcesses, setServiceProcesses] = useState<ServiceProcessRow[]>([]);
   const [hardware, setHardware] = useState<HardwareSnapshot | null>(null);
   const [hardwareHistory, setHardwareHistory] = useState<HardwareSnapshot[]>([]);
   const [hardwareInterval, setHardwareInterval] = useState<RefreshInterval>(5000);
@@ -485,6 +571,7 @@ export default function App() {
   const title = useMemo(() => {
     if (page === "tasks") return "任务计划程序";
     if (page === "docker") return "Docker";
+    if (page === "services") return "服务进程";
     return "硬件资源";
   }, [page]);
 
@@ -502,6 +589,11 @@ export default function App() {
     const response = await api.hardware();
     setHardware(response.item);
     setHardwareHistory((current) => [...current.slice(-29), response.item]);
+  }
+
+  async function refreshServices() {
+    const response = await api.serviceProcesses();
+    setServiceProcesses(response.items);
   }
 
   async function refreshAll() {
@@ -530,6 +622,11 @@ export default function App() {
     }, hardwareInterval);
     return () => window.clearInterval(timer);
   }, [authenticated, page, hardwareInterval]);
+
+  useEffect(() => {
+    if (!authenticated || page !== "services") return;
+    refreshServices().catch((err) => setError(err instanceof Error ? err.message : "无法刷新服务进程"));
+  }, [authenticated, page]);
 
   async function afterLogin() {
     setAuthenticated(true);
@@ -630,6 +727,56 @@ export default function App() {
     await executeProjectAction(project, action);
   }
 
+  async function addServicePort(port: number) {
+    setBusyAction("service:add");
+    setError("");
+    try {
+      await api.addServicePort(port);
+      await refreshServices();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "添加端口失败");
+    } finally {
+      setBusyAction("");
+    }
+  }
+
+  async function executeServiceStop(port: number) {
+    setBusyAction(`service:${port}:stop`);
+    try {
+      await api.stopServicePort(port);
+      await refreshServices();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "停止服务进程失败");
+    } finally {
+      setBusyAction("");
+    }
+  }
+
+  function serviceStop(row: ServiceProcessRow) {
+    if (row.pid === null) return;
+    setConfirmState({
+      title: "确认停止服务进程",
+      message: `即将停止端口 ${row.port} 上的进程 ${row.name ?? row.pid}，正在处理的连接可能会中断。端口会继续保留在管理列表中。`,
+      confirmLabel: "确认停止",
+      onConfirm: async () => {
+        setConfirmState(null);
+        await executeServiceStop(row.port);
+      }
+    });
+  }
+
+  async function removeServicePort(port: number) {
+    setBusyAction(`service:${port}:remove`);
+    try {
+      const response = await api.removeServicePort(port);
+      setServiceProcesses(response.items);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "移除端口失败");
+    } finally {
+      setBusyAction("");
+    }
+  }
+
   if (authenticated === null) return <main className="loading">正在加载</main>;
   if (!authenticated) return <Login onLogin={afterLogin} />;
 
@@ -643,6 +790,7 @@ export default function App() {
         <nav>
           <NavButton page="tasks" active={page} icon={<CalendarClock size={20} />} label="任务计划程序" onClick={setPage} />
           <NavButton page="docker" active={page} icon={<Boxes size={20} />} label="Docker" onClick={setPage} />
+          <NavButton page="services" active={page} icon={<ServerCog size={20} />} label="服务进程" onClick={setPage} />
           <NavButton page="hardware" active={page} icon={<Gauge size={20} />} label="硬件资源" onClick={setPage} />
         </nav>
       </aside>
@@ -656,6 +804,15 @@ export default function App() {
           <TasksPage items={tasks} onRefresh={refreshTasks} onAction={taskAction} busyAction={busyAction} />
         ) : page === "docker" ? (
           <DockerPage items={containers} onRefresh={refreshContainers} onAction={containerAction} onProjectAction={projectAction} busyAction={busyAction} />
+        ) : page === "services" ? (
+          <ServicesPage
+            items={serviceProcesses}
+            onRefresh={() => refreshServices().catch((err) => setError(err instanceof Error ? err.message : "无法刷新服务进程"))}
+            onAddPort={addServicePort}
+            onRemovePort={removeServicePort}
+            onStopPort={serviceStop}
+            busyAction={busyAction}
+          />
         ) : (
           <HardwarePage
             snapshot={hardware}
@@ -669,6 +826,7 @@ export default function App() {
       <nav className="bottom-nav">
         <NavButton page="tasks" active={page} icon={<CalendarClock size={20} />} label="任务计划程序" onClick={setPage} />
         <NavButton page="docker" active={page} icon={<Boxes size={20} />} label="Docker" onClick={setPage} />
+        <NavButton page="services" active={page} icon={<ServerCog size={20} />} label="服务进程" onClick={setPage} />
         <NavButton page="hardware" active={page} icon={<Gauge size={20} />} label="硬件资源" onClick={setPage} />
       </nav>
       {confirmState && <ConfirmDialog state={confirmState} onCancel={() => setConfirmState(null)} />}

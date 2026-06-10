@@ -58,6 +58,19 @@ export type HardwareSnapshot = {
   }>;
 };
 
+export type ServiceProcessRow = {
+  port: number;
+  pid: number | null;
+  name: string | null;
+  status: "listening" | "not-listening";
+  cpuPercent: number | null;
+  memoryBytes: number | null;
+  diskReadBytesPerSecond: number | null;
+  diskWriteBytesPerSecond: number | null;
+  networkReceiveBytesPerSecond: number | null;
+  networkTransmitBytesPerSecond: number | null;
+};
+
 async function requestJson<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(url, {
     credentials: "include",
@@ -85,6 +98,17 @@ export const api = {
   disableTask: (name: string) => requestJson("/api/tasks/" + encodeURIComponent(name) + "/disable", { method: "POST" }),
   containers: () => requestJson<{ items: ContainerRow[] }>("/api/docker/containers"),
   hardware: () => requestJson<{ item: HardwareSnapshot }>("/api/hardware/snapshot"),
+  serviceProcesses: () => requestJson<{ items: ServiceProcessRow[]; ports: number[] }>("/api/services/processes"),
+  addServicePort: (port: number) =>
+    requestJson<{ items: ServiceProcessRow[]; ports: number[] }>("/api/services/ports", {
+      method: "POST",
+      body: JSON.stringify({ port })
+    }),
+  removeServicePort: (port: number) =>
+    requestJson<{ items: ServiceProcessRow[]; ports: number[] }>("/api/services/ports/" + encodeURIComponent(String(port)), {
+      method: "DELETE"
+    }),
+  stopServicePort: (port: number) => requestJson("/api/services/ports/" + encodeURIComponent(String(port)) + "/stop", { method: "POST" }),
   startContainer: (id: string) => requestJson("/api/docker/containers/" + encodeURIComponent(id) + "/start", { method: "POST" }),
   stopContainer: (id: string) => requestJson("/api/docker/containers/" + encodeURIComponent(id) + "/stop", { method: "POST" }),
   startComposeProject: (project: string) => requestJson("/api/docker/projects/" + encodeURIComponent(project) + "/start", { method: "POST" }),

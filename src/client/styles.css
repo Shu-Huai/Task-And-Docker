@@ -236,6 +236,11 @@ button:focus-visible {
   grid-template-columns: minmax(120px, 1fr) minmax(160px, 1.2fr) minmax(140px, 1.1fr) 110px 110px 104px;
 }
 
+.service-grid .resource-head,
+.service-grid .resource-row {
+  grid-template-columns: 76px 86px minmax(110px, 1fr) 104px 76px 100px minmax(158px, 1.2fr) minmax(158px, 1.2fr) 104px;
+}
+
 .docker-grid .compose-row {
   background: #f8fbff;
   border-top-color: #cbd8ea;
@@ -310,6 +315,31 @@ button:focus-visible {
 .actions {
   display: flex;
   gap: 8px;
+}
+
+.services-page {
+  gap: 18px;
+}
+
+.service-toolbar {
+  align-items: flex-start;
+}
+
+.service-toolbar-actions,
+.port-form {
+  align-items: end;
+  display: flex;
+  gap: 10px;
+}
+
+.port-form label {
+  color: #4a5a70;
+  font-size: 14px;
+  min-width: 132px;
+}
+
+.service-offline {
+  background: #fbfcfe;
 }
 
 .status {
@@ -749,7 +779,8 @@ button:focus-visible {
   }
 
   .task-grid .resource-row,
-  .docker-grid .resource-row {
+  .docker-grid .resource-row,
+  .service-grid .resource-row {
     align-items: start;
     grid-template-columns: 1fr;
     padding: 16px;
@@ -773,7 +804,7 @@ button:focus-visible {
     bottom: 0;
     display: grid;
     gap: 8px;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     left: 0;
     padding: 8px 12px;
     position: fixed;
@@ -789,7 +820,10 @@ button:focus-visible {
   }
 
   .hardware-toolbar,
-  .refresh-control {
+  .refresh-control,
+  .service-toolbar,
+  .service-toolbar-actions,
+  .port-form {
     align-items: stretch;
     flex-direction: column;
   }
