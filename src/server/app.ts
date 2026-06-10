@@ -1,7 +1,7 @@
 import express, { type Request, type Response } from "express";
 import session from "express-session";
 import helmet from "helmet";
-import type { AppConfig } from "./config";
+import { DEFAULT_CONFIG_PATH, saveManagedServicePorts, type AppConfig } from "./config";
 import { collectHardwareSnapshot, type HardwareSnapshot } from "./hardware";
 import {
   listContainers,
@@ -11,6 +11,11 @@ import {
   stopContainer,
   type DockerContainer
 } from "./docker";
+import {
+  listManagedServiceProcesses,
+  stopManagedServiceProcess,
+  type ServiceProcessRow
+} from "./services";
 import {
   disableTask,
   listTasks,
@@ -35,11 +40,14 @@ export type AppServices = {
   stopContainer: (id: string) => Promise<void>;
   startComposeProject: (project: string) => Promise<void>;
   stopComposeProject: (project: string) => Promise<void>;
+  listManagedServiceProcesses: (ports: number[]) => Promise<ServiceProcessRow[]>;
+  stopManagedServiceProcess: (port: number, managedPorts: number[]) => Promise<void>;
   collectHardwareSnapshot: () => Promise<HardwareSnapshot>;
 };
 
 type CreateAppOptions = {
   config: AppConfig;
+  configPath?: string;
   services?: Partial<AppServices>;
   staticDir?: string;
 };
@@ -55,6 +63,8 @@ function defaultServices(): AppServices {
     stopContainer,
     startComposeProject,
     stopComposeProject,
+    listManagedServiceProcesses,
+    stopManagedServiceProcess,
     collectHardwareSnapshot
   };
 }
@@ -72,9 +82,10 @@ function paramAsString(value: string | string[]): string {
   return Array.isArray(value) ? value[0] : value;
 }
 
-export function createApp({ config, services: serviceOverrides = {}, staticDir }: CreateAppOptions) {
+export function createApp({ config, configPath = DEFAULT_CONFIG_PATH, services: serviceOverrides = {}, staticDir }: CreateAppOptions) {
   const app = express();
   const services: AppServices = { ...defaultServices(), ...serviceOverrides };
+  let managedPorts = [...config.services.managedPorts];
 
   app.use(helmet({ contentSecurityPolicy: false }));
   app.use(express.json());
@@ -163,6 +174,37 @@ export function createApp({ config, services: serviceOverrides = {}, staticDir }
     })
   );
 
+  app.get(
+    "/api/services/processes",
+    asyncRoute(async (_req, res) => {
+      res.json({ items: await services.listManagedServiceProcesses(managedPorts), ports: managedPorts });
+    })
+  );
+
+  app.post(
+    "/api/services/ports",
+    asyncRoute(async (req, res) => {
+      const port = Number(req.body?.port);
+      if (!Number.isInteger(port) || port < 1 || port > 65535) {
+        res.status(400).json({ error: "端口号必须在 1 到 65535 之间" });
+        return;
+      }
+      managedPorts = [...new Set([...managedPorts, port])].sort((left, right) => left - right);
+      saveManagedServicePorts(configPath, managedPorts);
+      res.json({ ports: managedPorts, items: await services.listManagedServiceProcesses(managedPorts) });
+    })
+  );
+
+  app.delete(
+    "/api/services/ports/:port",
+    asyncRoute(async (req, res) => {
+      const port = Number(paramAsString(req.params.port));
+      managedPorts = managedPorts.filter((managedPort) => managedPort !== port);
+      saveManagedServicePorts(configPath, managedPorts);
+      res.json({ ports: managedPorts, items: await services.listManagedServiceProcesses(managedPorts) });
+    })
+  );
+
   app.post(
     "/api/docker/containers/:id/start",
     asyncRoute(async (req, res) => {
@@ -175,6 +217,14 @@ export function createApp({ config, services: serviceOverrides = {}, staticDir }
     "/api/docker/containers/:id/stop",
     asyncRoute(async (req, res) => {
       await services.stopContainer(paramAsString(req.params.id));
+      res.json({ ok: true });
+    })
+  );
+
+  app.post(
+    "/api/services/ports/:port/stop",
+    asyncRoute(async (req, res) => {
+      await services.stopManagedServiceProcess(Number(paramAsString(req.params.port)), managedPorts);
       res.json({ ok: true });
     })
   );
