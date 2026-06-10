@@ -13,6 +13,7 @@
 - 任务计划程序页面读取配置中的文件夹，例如 `\Auto-Start-A\`。
 - Docker 页面通过本机 Docker CLI 读取容器，并按 Docker Compose 项目折叠分组、启动或停止整组容器。
 - 硬件资源页面展示 CPU、内存、磁盘、GPU 和网卡指标，并支持每秒、每五秒、每分钟刷新。
+- 服务进程页面按端口登记要管理的服务，只展示这些端口上当前监听的进程，例如 MySQL、Redis、Spring Boot、FastAPI、Node.js、Go 服务等。
 - 桌面端使用左侧导航栏，手机端使用底部导航栏。
 - 停止、结束、禁用等高影响操作会先弹出确认。
 - 后端执行操作前会先确认目标资源存在于当前本机列表中。
@@ -43,6 +44,9 @@
   },
   "docker": {
     "enabled": true
+  },
+  "services": {
+    "managedPorts": [8080, 3306, 6379]
   }
 }
 ```
@@ -98,12 +102,19 @@ npm run install:sensors
 
 安装完成后运行 `npm run dev` 或 `npm start`，再打开硬件资源页面。`tools/` 目录只保存本机下载的工具，不进入 Git 仓库。如果 CPU 传感器仍然为空，请用管理员 PowerShell 启动应用进程。
 
+## 管理服务进程
+
+服务进程页面把端口作为长期管理对象。添加 `8080`、`3306`、`6379` 这类端口后，页面会通过 Windows 监听端口查找当前 PID，并展示进程名、状态、CPU、内存、磁盘 I/O 和网络列。停止进程后 PID 会消失，但端口仍保留在列表中并显示为“未监听”，方便服务稍后重启后继续被同一个端口槽位追踪。
+
+端口列表会写回 `config/app.config.json` 的 `services.managedPorts`。网络列在 Windows 无法稳定按进程采样时会显示 `-`；端口到进程的识别不依赖服务栈，因此适用于 MySQL、Redis、Java/Spring Boot、Python/FastAPI、Node.js、Go 等本机监听端口的服务。
+
 ## 运行说明
 
 最终应用只管理它所在的那台 Windows 机器：
 
 - 任务计划程序使用本机 PowerShell 命令。
 - Docker 使用本机 `docker` CLI。
+- 服务进程使用本机 PowerShell 的 `Get-NetTCPConnection`、`Get-Process` 和性能计数器按端口解析监听进程。
 - 硬件资源使用本机 PowerShell、CIM 和性能计数器采样；NVIDIA GPU 会额外尝试读取 `nvidia-smi`，Intel、AMD 会尝试读取 Windows GPU 性能计数器。
 - CPU 温度、CPU 功耗由本机 LibreHardwareMonitor 或 OpenHardwareMonitor WMI 传感器提供；应用会优先尝试启动 `tools/LibreHardwareMonitor` 中的本项目传感器程序。
 
